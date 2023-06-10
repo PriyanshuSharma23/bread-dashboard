@@ -4,9 +4,9 @@ export function AddQuestion({ addQuestion }) {
   return (
     <button
       onClick={() => addQuestion({ question: new TextQuestion({}) })}
-      className="lg:min-w-[36rem grid  h-44 w-[80%]  max-w-2xl  place-content-center rounded-3xl border border-dashed border-neutral-600 bg-white px-6 py-3 text-neutral-800 shadow-md focus-within:outline-1 focus-within:outline-offset-4 focus-within:outline-neutral-600/30"
+      className=" grid  h-44 w-[80%]  max-w-2xl  place-content-center rounded-3xl border border-dashed border-neutral-600  px-6 py-3 text-neutral-800  focus-within:outline-1 focus-within:outline-offset-4 focus-within:outline-neutral-600/30"
     >
-      <span className="flex h-20 w-20 items-center justify-center rounded-full bg-neutral-900 text-4xl text-white">
+      <span className="mx-auto flex  h-20 w-20 items-center justify-center rounded-full bg-neutral-500 text-4xl text-white">
         <svg
           width="34"
           height="34"
@@ -29,6 +29,9 @@ export function AddQuestion({ addQuestion }) {
             strokeLinejoin="round"
           />
         </svg>
+      </span>
+      <span className="mt-4 text-2xl font-medium text-neutral-500">
+        Add a question
       </span>
     </button>
   );

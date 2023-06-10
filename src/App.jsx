@@ -4,31 +4,70 @@ import { QuestionBlock } from "./components/QuestionBlock";
 import { BranchQuestion } from "./types/question";
 import { AddQuestion } from "./components/AddQuestion";
 import { useFormQuery } from "./hooks/useFormQuery";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import { useFormQuestions } from "./hooks/useFormQuestions";
+import { relativeTime } from "./utils/relTime";
 import { useFormMutation } from "./hooks/mutations/updateForm";
+import { useSyncQuestionsMutation } from "./hooks/mutations/syncQuestions";
 
 function App() {
   let { formId } = useParams();
   const formQuery = useFormQuery({ formId });
   const formMutation = useFormMutation({ formId });
   const questionsQuery = useFormQuestions({ formId });
-  console.log("questionsQuery", questionsQuery);
 
   const [formQuestions, setFormQuestions] = useState([]);
   const [editMode, setEditMode] = useState(false);
+  const [lastSyncTime, setLastSyncTime] = useState(null);
   const [surveyTitle, setSurveyTitle] = useState("");
   const titleRef = useRef(null);
-
-  console.log("formQuestions", formQuestions);
+  const syncDBMutation = useSyncQuestionsMutation({ formId });
+  let debounceTimerRef = useRef(null);
+  let updatedOnce = useRef(false);
 
   useEffect(() => {
-    if (formQuery.isSuccess) {
-      // setFormQuestions(formQuery.data.questions);
+    if (formQuery.isSuccess && formQuery.data && !formQuery.isFetching) {
       setSurveyTitle(formQuery.data.formName);
+      setLastSyncTime(new Date(formQuery.data.updatedAt.seconds * 1000));
     }
-  }, [formQuery.isSuccess, formQuery.data]);
+  }, [formQuery.isSuccess, formQuery.data, formQuery.isFetching]);
+
+  useEffect(() => {
+    console.log("questionsQuery.isSuccess", questionsQuery.data);
+    setLastSyncTime(new Date());
+    if (questionsQuery.isSuccess && updatedOnce.current === false) {
+      setFormQuestions(questionsQuery.data);
+      updatedOnce.current = false;
+    }
+  }, [questionsQuery.isSuccess, questionsQuery.data]);
+
+  useEffect(() => {
+    // debouching the sync with db
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+
+      console.log("Debouncing sync");
+
+      debounceTimerRef.current = setTimeout(() => {
+        // execute the sync
+        syncDBMutation.mutate({
+          formQuestions,
+        });
+      }, 2000);
+    } else {
+      debounceTimerRef.current = setTimeout(() => {
+        // execute the sync
+        syncDBMutation.mutate({
+          formQuestions,
+        });
+      }, 2000);
+    }
+
+    return () => {
+      clearTimeout(debounceTimerRef.current);
+    };
+  }, [formQuestions]);
 
   useEffect(() => {
     let timeOut;
@@ -49,8 +88,44 @@ function App() {
 
   return (
     <div>
-      <div className="fixed left-0 top-0 flex items-center rounded-br-lg bg-white px-4 py-2 shadow-md">
-        <div className="flex text-ellipsis text-2xl">
+      <button
+        className="fixed right-1 top-1 grid h-16 w-16 place-content-center rounded-full  p-1  hover:bg-neutral-200 active:bg-neutral-300 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-transparent"
+        disabled={formQuery.data.isDraft}
+      >
+        <svg
+          width={40}
+          height={40}
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M15.3156 16.6578L8.6938 13.3469M8.68439 10.6578L15.3125 7.34377M21 18C21 19.6569 19.6569 21 18 21C16.3431 21 15 19.6569 15 18C15 16.3431 16.3431 15 18 15C19.6569 15 21 16.3431 21 18ZM21 6C21 7.65685 19.6569 9 18 9C16.3431 9 15 7.65685 15 6C15 4.34315 16.3431 3 18 3C19.6569 3 21 4.34315 21 6ZM9 12C9 13.6569 7.65685 15 6 15C4.34315 15 3 13.6569 3 12C3 10.3431 4.34315 9 6 9C7.65685 9 9 10.3431 9 12Z"
+            stroke="currentColor"
+            strokeWidth="1.5"
+          />
+        </svg>
+      </button>
+      <div className="fixed left-0 top-0 z-50 flex items-center rounded-br-lg bg-white px-4 py-2 shadow-md">
+        <div className="flex items-center gap-2 text-ellipsis text-2xl">
+          <Link to={"/forms"}>
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M4 12L20 12M4 12L10 6M4 12L10 18"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </Link>
+
           <input
             type="text"
             className="h-full w-full text-ellipsis bg-transparent text-2xl outline-none focus:min-w-max"
@@ -117,7 +192,7 @@ function App() {
         )}
       </div>
 
-      <div className="app mx-auto flex  min-h-screen flex-col items-center  gap-8 bg-slate-100  pb-44 pt-20">
+      <div className="app mx-auto flex  min-h-screen flex-col items-center  gap-8 bg-slate-100  px-2 pb-44 pt-20">
         {formQuestions.map((formQuestion, idx) => (
           <QuestionBlock
             question={formQuestion}
@@ -143,20 +218,64 @@ function App() {
               <span className="text-2xl font-bold">{formQuestions.length}</span>
             </span>
             <button className="flex items-center gap-1 text-sm text-neutral-400 hover:text-neutral-600 hover:underline">
-              Synced 2 minutes ago.
+              {lastSyncTime && `Synced ${relativeTime(lastSyncTime)}`}
               {syncButtonSvg}
             </button>
           </div>
 
-          <button
-            className="rounded-md bg-neutral-800 px-4 py-2 text-white"
-            onClick={() => {
-              const questionsJSON = convertQuestionsToJSON(formQuestions);
-              console.log(JSON.stringify(questionsJSON));
-            }}
-          >
-            Share Survey
-          </button>
+          <div className="flex items-center gap-8">
+            <span
+              className={`rounded-full px-4 py-1 ${
+                formQuery.data.isDraft ? "bg-orange-300" : "bg-green-300"
+              }`}
+            >
+              {formQuery.data.isDraft ? "Draft" : "Published"}
+            </span>
+
+            {formQuery.data.isDraft ? (
+              <button
+                className="rounded-md bg-neutral-800 px-4 py-2 text-white disabled:cursor-not-allowed disabled:opacity-50"
+                disabled={formMutation.isLoading || syncDBMutation.isLoading}
+                onClick={() => {
+                  formQuestions.forEach((question) => {
+                    if ("checkValid" in question) {
+                      try {
+                        if (question.checkValid()) {
+                          syncDBMutation.mutate({
+                            formQuestions,
+                          });
+                          formMutation.mutate({
+                            updates: {
+                              isDraft: false,
+                            },
+                          });
+                        }
+                      } catch (e) {
+                        alert(e.message);
+                        return;
+                      }
+                    }
+                  });
+                }}
+              >
+                Publish Survey
+              </button>
+            ) : (
+              <button
+                className="rounded-md bg-neutral-800 px-4 py-2 text-white disabled:cursor-not-allowed disabled:opacity-50"
+                disabled={formMutation.isLoading}
+                onClick={() => {
+                  formMutation.mutate({
+                    updates: {
+                      isDraft: true,
+                    },
+                  });
+                }}
+              >
+                Draft and Edit
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </div>
@@ -213,12 +332,19 @@ function App() {
   }
 
   function updateTitle() {
-    formMutation.mutate({
-      form: formId,
-      updates: {
-        formName: surveyTitle,
+    formMutation.mutate(
+      {
+        form: formId,
+        updates: {
+          formName: surveyTitle,
+        },
       },
-    });
+      {
+        onSuccess: () => {
+          setLastSyncTime(new Date());
+        },
+      }
+    );
   }
 }
 

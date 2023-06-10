@@ -24,5 +24,5 @@ export const relativeTime = (d) => {
     return f.format(-minutes, "minute");
   }
 
-  return f.format(-diff / 1000, "second");
+  return "just now";
 };

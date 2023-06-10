@@ -45,7 +45,7 @@ export const QuestionBlock = ({
   const isSlider = question.constructor === SliderQuestion;
 
   return (
-    <div className="group/main-card relative w-[80%]  max-w-2xl rounded-3xl  border-black  bg-white px-6 py-4 text-neutral-800 shadow-md lg:min-w-[36rem]">
+    <div className="group/main-card relative w-full max-w-2xl rounded-3xl  border-black bg-white px-6 py-4 text-neutral-800 shadow-md md:w-[80%] lg:min-w-[36rem]">
       <button
         onClick={() => deleteQuestion({ idx: questionIdx })}
         className={`pointer-events-none  absolute -right-1 -top-1 flex  h-4 w-4 items-center justify-center rounded-full bg-neutral-800 opacity-0  transition-opacity group-hover/main-card:pointer-events-auto group-hover/main-card:opacity-100`}
@@ -191,7 +191,7 @@ export const QuestionBlock = ({
             >
               <div className="group relative">
                 <Listbox.Button className="relative flex min-w-max items-center  justify-center gap-1 rounded-full bg-neutral-800 px-4 py-2 text-sm text-white disabled:cursor-not-allowed disabled:opacity-30">
-                  {question.next === undefined ? "Branch To" : question.next}
+                  {question.next == null ? "Branch To" : question.next}
                   <span>
                     <svg
                       width="20"

@@ -7,7 +7,7 @@ export class SliderQuestion {
     maxLength,
     key = "",
     id,
-    next,
+    next = null,
   }) {
     this.text = text;
     this.isModifiable = isModifiable;
@@ -21,7 +21,7 @@ export class SliderQuestion {
   }
 
   checkValid() {
-    if (this.text === undefined || this.text === "") {
+    if (this.text.english === "") {
       throw new Error("text is undefined in " + this.id);
     }
 
@@ -82,6 +82,34 @@ export class SliderQuestion {
       </svg>
     );
   }
+
+  getJSON() {
+    return {
+      text: this.text,
+      isModifiable: this.isModifiable,
+      required: this.required,
+      minLength: this.minLength,
+      maxLength: this.maxLength,
+      key: this.key,
+      id: this.id,
+      type: "slider",
+      next: this.next,
+    };
+  }
+
+  isEqual(other) {
+    return (
+      this.text.english === other.text.english &&
+      this.isModifiable === other.isModifiable &&
+      this.required === other.required &&
+      this.minLength === other.minLength &&
+      this.maxLength === other.maxLength &&
+      this.key === other.key &&
+      this.id === other.id &&
+      this.type === other.type &&
+      this.next === other.next
+    );
+  }
 }
 
 export class OptionQuestion {
@@ -93,7 +121,7 @@ export class OptionQuestion {
     multipleCorrect = false,
     key = "",
     id,
-    next,
+    next = null,
   }) {
     this.text = text;
     this.options = options;
@@ -107,7 +135,7 @@ export class OptionQuestion {
   }
 
   checkValid() {
-    if (this.text === undefined || this.text === "") {
+    if (this.text.english === "") {
       throw new Error("text is undefined in " + this.id);
     }
 
@@ -189,6 +217,34 @@ export class OptionQuestion {
       </svg>
     );
   }
+
+  getJSON() {
+    return {
+      text: this.text,
+      options: this.options,
+      isModifiable: this.isModifiable,
+      required: this.required,
+      multipleCorrect: this.multipleCorrect,
+      key: this.key,
+      id: this.id,
+      type: "multi-correct",
+      next: this.next,
+    };
+  }
+
+  isEqual(other) {
+    return (
+      this.text.english === other.text.english &&
+      this.options === other.options &&
+      this.isModifiable === other.isModifiable &&
+      this.required === other.required &&
+      this.multipleCorrect === other.multipleCorrect &&
+      this.key === other.key &&
+      this.id === other.id &&
+      this.type === other.type &&
+      this.next === other.next
+    );
+  }
 }
 
 export class TextQuestion {
@@ -198,7 +254,7 @@ export class TextQuestion {
     required = true,
     key = "",
     id,
-    next,
+    next = null,
   }) {
     this.text = text;
     this.isModifiable = isModifiable;
@@ -220,7 +276,7 @@ export class TextQuestion {
   }
 
   checkValid() {
-    if (this.text === undefined || this.text === "") {
+    if (this.text.english === "") {
       throw new Error("text is undefined in " + this.id);
     }
 
@@ -272,6 +328,30 @@ export class TextQuestion {
       </svg>
     );
   }
+
+  getJSON() {
+    return {
+      text: this.text,
+      isModifiable: this.isModifiable,
+      required: this.required,
+      key: this.key,
+      id: this.id,
+      type: "text",
+      next: this.next,
+    };
+  }
+
+  isEqual(other) {
+    return (
+      this.text.english === other.text.english &&
+      this.isModifiable === other.isModifiable &&
+      this.required === other.required &&
+      this.key === other.key &&
+      this.id === other.id &&
+      this.type === other.type &&
+      this.next === other.next
+    );
+  }
 }
 
 export class BranchQuestion {
@@ -305,7 +385,7 @@ export class BranchQuestion {
   }
 
   checkValid() {
-    if (this.text === undefined || this.text === "") {
+    if (this.text.english === "") {
       throw new Error("text is undefined in " + this.id);
     }
 
@@ -319,10 +399,6 @@ export class BranchQuestion {
 
     return true;
   }
-
-  // static fromJSON(json){
-
-  // }
 
   static getIcon(props) {
     return (
@@ -370,6 +446,30 @@ export class BranchQuestion {
           strokeLinejoin="round"
         />
       </svg>
+    );
+  }
+
+  getJSON() {
+    return {
+      text: this.text,
+      key: this.key,
+      options: this.options,
+      isModifiable: this.isModifiable,
+      required: this.required,
+      id: this.id,
+      type: "single-correct",
+    };
+  }
+
+  isEqual(other) {
+    return (
+      this.text.english === other.text.english &&
+      this.options === other.options &&
+      this.isModifiable === other.isModifiable &&
+      this.required === other.required &&
+      this.key === other.key &&
+      this.id === other.id &&
+      this.type === other.type
     );
   }
 }

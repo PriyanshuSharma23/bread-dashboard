@@ -17,20 +17,20 @@ export const FormDashboard = () => {
   return (
     <div className="">
       <div className="fixed inset-x-0 top-0 -z-10 h-[20.5rem] bg-neutral-900 pt-10 ">
-        <div className="container mx-auto">
+        <div className="container mx-auto px-4">
           <div className="">
             <h1 className="text-2xl font-medium text-white">Recent Forms</h1>
           </div>
 
-          <div className=" mt-8 flex items-center gap-4">
+          <div className=" mt-8 flex items-center gap-4 overflow-y-scroll">
             {forms.map((form) => (
               <FormCard form={form} />
             ))}
           </div>
         </div>
       </div>
-      <div className="fixed inset-x-0 bottom-0 top-80 min-h-screen rounded-t-lg  bg-white pt-8 shadow-2xl">
-        <div className="container mx-auto">
+      <div className="fixed inset-x-0 bottom-0 top-80 min-h-screen rounded-t-lg  bg-white pt-4  shadow-2xl lg:pt-8">
+        <div className="container mx-auto px-4">
           <h1 className="text-3xl font-semibold text-neutral-600">
             Forms Dashboard
           </h1>
@@ -124,10 +124,12 @@ const FormCard = ({ form }) => {
   const { isDraft: draft, formName, updatedAt, createdAt } = form;
 
   return (
-    <div className="relative h-40 w-56 rounded-md bg-white p-2 shadow-md">
+    <div className="min-w-56 relative h-40 flex-shrink-0  rounded-md bg-white p-2 shadow-md">
       <div className="flex justify-between">
-        <h1 className="text-xl">{formName}</h1>
-        <div>
+        <h1 className="w-36 overflow-hidden text-ellipsis whitespace-nowrap text-xl">
+          {formName}
+        </h1>
+        <div className="pl-4">
           <span
             className={`rounded-full   px-4  py-1 text-xs font-medium text-neutral-900 ${
               draft ? "bg-yellow-300" : "bg-green-300"

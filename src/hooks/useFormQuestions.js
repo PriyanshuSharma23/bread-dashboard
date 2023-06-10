@@ -2,8 +2,17 @@ import { useQuery } from "@tanstack/react-query";
 import { getDocs, collection } from "firebase/firestore";
 import { db } from "../firebase";
 import { useFormQuery } from "./useFormQuery";
+import {
+  BranchQuestion,
+  OptionQuestion,
+  SliderQuestion,
+  TextQuestion,
+} from "../types/question";
 
 const nextIdFromRef = (ref) => {
+  if (typeof ref === "string") {
+    return ref;
+  }
   let segments = ref._key.path.segments;
   let newNext = segments[segments.length - 1];
 
@@ -16,10 +25,10 @@ export const useFormQuestions = ({ formId }) => {
   return useQuery({
     enabled: formsQuery.data != null,
     staleTime: 0.5 * 60 * 60 * 1000, // 30 minutes
-    queryKey: ["form questions", formsQuery.data],
+    queryKey: ["form questions"],
     refetchOnWindowFocus: false,
     queryFn: async (params) => {
-      let form = params.queryKey[1];
+      let form = formsQuery.data;
       console.log("form", form);
       console.log("params", params);
       let formQuestions = await getDocs(
@@ -37,7 +46,7 @@ export const useFormQuestions = ({ formId }) => {
         return [];
       }
 
-      console.log("docs", form.start, form);
+      console.log("docs", docs);
 
       let ordered = [];
       let nextId = nextIdFromRef(form.start);
@@ -45,12 +54,19 @@ export const useFormQuestions = ({ formId }) => {
       let visited = new Set();
       let runs = 0;
 
-      console.log("nextID", nextId);
       while (stack.length > 0 && runs < 100) {
         let nextId = stack.pop();
+        if (!nextId) {
+          break;
+        }
 
         if (!visited.has(nextId)) {
           let doc = docs.find((doc) => doc.id === nextId);
+
+          if (!doc) {
+            throw new Error("doc not found", nextId);
+          }
+
           ordered.push(doc);
           visited.add(nextId);
 
@@ -62,7 +78,8 @@ export const useFormQuestions = ({ formId }) => {
             if ("options" in doc) {
               for (let j = 0; j < doc.options.length; j++) {
                 let option = doc.options[j];
-                if (option.next !== null) {
+                console.log("option", option);
+                if ("next" in option && option.next != null) {
                   stack.push(nextIdFromRef(option.next));
                 }
               }
@@ -73,7 +90,30 @@ export const useFormQuestions = ({ formId }) => {
         runs++;
       }
 
-      return ordered;
+      console.log("ordered", ordered);
+
+      let questions = ordered.map((q) => {
+        q = {
+          ...q,
+          next: q.next ? nextIdFromRef(q.next) : null,
+        };
+
+        switch (q.type) {
+          case "text":
+            return new TextQuestion(q);
+          case "single-correct":
+            return new BranchQuestion(q);
+          case "multi-correct":
+            return new OptionQuestion(q);
+          case "slider":
+            return new SliderQuestion(q);
+          default:
+            throw new Error("Unknown question type");
+        }
+      });
+
+      console.log("questions", questions);
+      return questions;
     },
   });
 };

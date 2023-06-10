@@ -14,6 +14,7 @@ export const useFormMutation = ({ formId }) => {
   return useMutation({
     mutationKey: ["form update", formId],
     mutationFn: async ({ form, updates }) => {
+      form = formId;
       await updateDoc(doc(db, "forms", form), {
         ...updates,
         updatedAt: new Date(),
