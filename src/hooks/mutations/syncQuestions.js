@@ -85,7 +85,7 @@ export const useSyncQuestionsMutation = ({ formId }) => {
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries();
+        queryClient.invalidateQueries(["form questions"]);
       },
     }
   );

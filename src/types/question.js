@@ -499,6 +499,7 @@ export function QuestionFromType(type, data) {
         multipleCorrect: data.multipleCorrect,
         key: data.key,
         id: data.id,
+        next: data.next ?? null,
       });
     case "text":
       return new TextQuestion({
@@ -507,6 +508,7 @@ export function QuestionFromType(type, data) {
         required: data.required,
         key: data.key,
         id: data.id,
+        next: data.next ?? null,
       });
     case "branch":
       return new BranchQuestion({
@@ -524,6 +526,7 @@ export function QuestionFromType(type, data) {
         maxLength: data.maxLength,
         key: data.key,
         id: data.id,
+        next: data.next ?? null,
       });
     default:
       return null;

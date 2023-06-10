@@ -10,6 +10,8 @@ import { useFormQuestions } from "./hooks/useFormQuestions";
 import { relativeTime } from "./utils/relTime";
 import { useFormMutation } from "./hooks/mutations/updateForm";
 import { useSyncQuestionsMutation } from "./hooks/mutations/syncQuestions";
+import { ShareWindow } from "./components/Share";
+import { Loader } from "./components/Loader";
 
 function App() {
   let { formId } = useParams();
@@ -25,6 +27,8 @@ function App() {
   const syncDBMutation = useSyncQuestionsMutation({ formId });
   let debounceTimerRef = useRef(null);
   let updatedOnce = useRef(false);
+
+  const [shareOpen, setShareOpen] = useState(false);
 
   useEffect(() => {
     if (formQuery.isSuccess && formQuery.data && !formQuery.isFetching) {
@@ -83,14 +87,27 @@ function App() {
   }, [editMode]);
 
   if (formQuery.isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="fixed inset-0">
+        <div className="m-auto">
+          <Loader />
+        </div>
+      </div>
+    );
   }
 
   return (
     <div>
+      <ShareWindow
+        url={`www.google.com`}
+        open={shareOpen}
+        setOpen={setShareOpen}
+        form={formQuery.data}
+      />
       <button
         className="fixed right-1 top-1 grid h-16 w-16 place-content-center rounded-full  p-1  hover:bg-neutral-200 active:bg-neutral-300 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-transparent"
         disabled={formQuery.data.isDraft}
+        onClick={() => setShareOpen((prev) => !prev)}
       >
         <svg
           width={40}
@@ -106,7 +123,7 @@ function App() {
           />
         </svg>
       </button>
-      <div className="fixed left-0 top-0 z-50 flex items-center rounded-br-lg bg-white px-4 py-2 shadow-md">
+      <div className="fixed left-0 top-0 z-20 flex items-center rounded-br-lg bg-white px-4 py-2 shadow-md">
         <div className="flex items-center gap-2 text-ellipsis text-2xl">
           <Link to={"/forms"}>
             <svg

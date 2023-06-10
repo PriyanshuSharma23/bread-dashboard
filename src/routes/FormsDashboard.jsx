@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 import { useFormsQuery } from "../hooks/useFormsQuery";
 import { relativeTime } from "../utils/relTime";
 import { useAddFormMutation } from "../hooks/mutations/addFormMutation";
+import { ShareWindow } from "../components/Share";
+import { Loader } from "../components/Loader";
 
 export const FormDashboard = () => {
   const formsQuery = useFormsQuery();
@@ -11,25 +14,18 @@ export const FormDashboard = () => {
   let forms = formsQuery.data;
 
   if (formsQuery.isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  return (
-    <div className="">
-      <div className="fixed inset-x-0 top-0 -z-10 h-[20.5rem] bg-neutral-900 pt-10 ">
-        <div className="container mx-auto px-4">
-          <div className="">
-            <h1 className="text-2xl font-medium text-white">Recent Forms</h1>
-          </div>
-
-          <div className=" mt-8 flex items-center gap-4 overflow-y-scroll">
-            {forms.map((form) => (
-              <FormCard form={form} />
-            ))}
-          </div>
+    return (
+      <div className="fixed inset-0">
+        <div className="m-auto">
+          <Loader />
         </div>
       </div>
-      <div className="fixed inset-x-0 bottom-0 top-80 min-h-screen rounded-t-lg  bg-white pt-4  shadow-2xl lg:pt-8">
+    );
+  }
+  return (
+    <div className="">
+      <div className="fixed inset-x-0 top-0 -z-10 h-64 bg-gradient-to-t from-gray-700 via-gray-900 to-black pt-10 "></div>
+      <div className="fixed inset-x-0 bottom-0 top-60 min-h-screen rounded-t-lg  bg-slate-50 pt-4  shadow-2xl lg:pt-8">
         <div className="container mx-auto px-4">
           <h1 className="text-3xl font-semibold text-neutral-600">
             Forms Dashboard
@@ -42,7 +38,7 @@ export const FormDashboard = () => {
                   forms: formsQuery.data,
                 });
               }}
-              className="grid aspect-square w-44 place-content-center rounded-md border border-dashed  border-neutral-800 text-neutral-600"
+              className="grid h-40  w-56 place-content-center rounded-md border border-dashed  border-neutral-800 text-neutral-600"
             >
               <svg
                 width={50}
@@ -50,6 +46,7 @@ export const FormDashboard = () => {
                 viewBox="0 0 25 25"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
+                className="mx-auto mb-2"
               >
                 <path
                   d="M12.4502 7.44751V17.4475"
@@ -73,7 +70,11 @@ export const FormDashboard = () => {
                   strokeLinejoin="round"
                 />
               </svg>
+              <p className="text-sm font-medium">Create a new Survey</p>
             </button>
+            {forms.map((form) => (
+              <FormCard form={form} />
+            ))}
           </div>
         </div>
       </div>
@@ -122,54 +123,66 @@ const editPen = (
  */
 const FormCard = ({ form }) => {
   const { isDraft: draft, formName, updatedAt, createdAt } = form;
+  const [showShare, setShowShare] = useState(false);
 
   return (
-    <div className="min-w-56 relative h-40 flex-shrink-0  rounded-md bg-white p-2 shadow-md">
-      <div className="flex justify-between">
-        <h1 className="w-36 overflow-hidden text-ellipsis whitespace-nowrap text-xl">
-          {formName}
-        </h1>
-        <div className="pl-4">
-          <span
-            className={`rounded-full   px-4  py-1 text-xs font-medium text-neutral-900 ${
-              draft ? "bg-yellow-300" : "bg-green-300"
-            }`}
-          >
-            {draft ? "Draft" : "Published"}
-          </span>
+    <>
+      <ShareWindow
+        url={"https://zivi.vercel.app/?formId=" + form.id}
+        open={showShare}
+        setOpen={setShowShare}
+        form={form}
+      />
+      <div className="min-w-56 relative h-40 flex-shrink-0  rounded-md bg-white p-2 shadow-md">
+        <div className="flex justify-between">
+          <h1 className="w-36 overflow-hidden text-ellipsis whitespace-nowrap text-xl">
+            {formName}
+          </h1>
+          <div className="pl-4">
+            <span
+              className={`rounded-full   px-4  py-1 text-xs font-medium text-neutral-900 ${
+                draft ? "bg-yellow-300" : "bg-green-300"
+              }`}
+            >
+              {draft ? "Draft" : "Published"}
+            </span>
+          </div>
         </div>
-      </div>
 
-      <div className="mt-0">
-        <p className="text-sm text-neutral-500">
-          Created {relativeTime(new Date(createdAt.seconds * 1000))}
-        </p>
-        <p className="text-sm text-neutral-500">
-          Updated {relativeTime(new Date(updatedAt.seconds * 1000))}
-        </p>
-      </div>
+        <div className="mt-0">
+          <p className="text-sm text-neutral-500">
+            Created {relativeTime(new Date(createdAt.seconds * 1000))}
+          </p>
+          <p className="text-sm text-neutral-500">
+            Updated {relativeTime(new Date(updatedAt.seconds * 1000))}
+          </p>
+        </div>
 
-      <div className="absolute inset-x-0 bottom-0 flex items-center justify-between p-2">
-        <div className="">
-          {!draft && (
-            <span className="text-sm text-neutral-500">2 responses</span>
-          )}
-        </div>
-        <div className="flex">
-          <button
-            className="grid h-10 w-10 place-content-center rounded-full  p-1  hover:bg-neutral-200 active:bg-neutral-300 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-transparent"
-            disabled={draft}
-          >
-            {shareIcon}
-          </button>
-          <Link
-            to={`/form-builder/${form.id}`}
-            className="grid h-10 w-10 place-content-center rounded-full  p-1 hover:bg-neutral-200 active:bg-neutral-300"
-          >
-            {editPen}
-          </Link>
+        <div className="absolute inset-x-0 bottom-0 flex items-center justify-between p-2">
+          <div className="">
+            {!draft && (
+              <span className="text-sm text-neutral-500">2 responses</span>
+            )}
+          </div>
+          <div className="flex">
+            <button
+              className="grid h-10 w-10 place-content-center rounded-full  p-1  hover:bg-neutral-200 active:bg-neutral-300 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-transparent"
+              disabled={draft}
+              onClick={() => {
+                setShowShare(true);
+              }}
+            >
+              {shareIcon}
+            </button>
+            <Link
+              to={`/form-builder/${form.id}`}
+              className="grid h-10 w-10 place-content-center rounded-full  p-1 hover:bg-neutral-200 active:bg-neutral-300"
+            >
+              {editPen}
+            </Link>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
