@@ -1,3 +1,89 @@
+export class SliderQuestion {
+  constructor({
+    text = "",
+    aiEnhance = false,
+    required = true,
+    minRange,
+    maxRange,
+    key = "",
+    id,
+    next,
+  }) {
+    this.text = text;
+    this.aiEnhance = aiEnhance;
+    this.required = required;
+    this.minRange = minRange;
+    this.maxRange = maxRange;
+    this.key = key;
+    this.id = id ?? Math.random().toString(36).substr(2, 9);
+    this.type = "slider";
+    this.next = next;
+  }
+
+  checkValid() {
+    if (this.text === undefined || this.text === "") {
+      throw new Error("text is undefined in " + this.id);
+    }
+
+    if (this.minRange === undefined || this.maxRange === undefined) {
+      throw new Error("minRange or maxRange is undefined in " + this.id);
+    }
+
+    if (this.minRange > this.maxRange) {
+      throw new Error("minRange is greater than maxRange " + this.id);
+    }
+
+    if (this.key === undefined || this.key === "") {
+      throw new Error("key is undefined in " + this.id);
+    }
+
+    return true;
+  }
+
+  getObj() {
+    return {
+      text: this.text,
+      aiEnhance: this.aiEnhance,
+      required: this.required,
+      minRange: this.minRange,
+      maxRange: this.maxRange,
+      key: this.key,
+      id: this.id,
+    };
+  }
+
+  static getIcon() {
+    return (
+      <svg
+        width="18"
+        height="6"
+        viewBox="0 0 18 6"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M3 3H1"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+        />
+        <path
+          d="M7 3L17 3"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+        />
+        <path
+          d="M7 3C7 1.89543 6.1046 1 5 1C3.8954 1 3 1.89543 3 3C3 4.10457 3.8954 5 5 5C6.1046 5 7 4.10457 7 3Z"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+        />
+      </svg>
+    );
+  }
+}
+
 export class OptionQuestion {
   constructor({
     text = "",
@@ -7,6 +93,7 @@ export class OptionQuestion {
     multipleCorrect = false,
     key = "",
     id,
+    next,
   }) {
     this.text = text;
     this.options = options;
@@ -16,6 +103,23 @@ export class OptionQuestion {
     this.key = key;
     this.id = id ?? Math.random().toString(36).substr(2, 9);
     this.type = "option";
+    this.next = next;
+  }
+
+  checkValid() {
+    if (this.text === undefined || this.text === "") {
+      throw new Error("text is undefined in " + this.id);
+    }
+
+    if (this.options === undefined || this.options.length === 0) {
+      throw new Error("options is undefined in " + this.id);
+    }
+
+    if (this.key === undefined || this.key === "") {
+      throw new Error("key is undefined in " + this.id);
+    }
+
+    return true;
   }
 
   getObj() {
@@ -88,13 +192,21 @@ export class OptionQuestion {
 }
 
 export class TextQuestion {
-  constructor({ text = "", aiEnhance = false, required = true, key = "", id }) {
+  constructor({
+    text = "",
+    aiEnhance = false,
+    required = true,
+    key = "",
+    id,
+    next,
+  }) {
     this.text = text;
     this.aiEnhance = aiEnhance;
     this.required = required;
     this.key = key;
     this.id = id ?? Math.random().toString(36).substr(2, 9);
     this.type = "text";
+    this.next = next;
   }
 
   getObj() {
@@ -105,6 +217,18 @@ export class TextQuestion {
       key: this.key,
       id: this.id,
     };
+  }
+
+  checkValid() {
+    if (this.text === undefined || this.text === "") {
+      throw new Error("text is undefined in " + this.id);
+    }
+
+    if (this.key === undefined || this.key === "") {
+      throw new Error("key is undefined in " + this.id);
+    }
+
+    return true;
   }
 
   static getIcon(props) {
@@ -174,6 +298,26 @@ export class BranchQuestion {
     };
   }
 
+  checkValid() {
+    if (this.text === undefined || this.text === "") {
+      throw new Error("text is undefined in " + this.id);
+    }
+
+    if (this.options === undefined || this.options.length === 0) {
+      throw new Error("options is undefined in " + this.id);
+    }
+
+    if (this.key === undefined || this.key === "") {
+      throw new Error("key is undefined in " + this.id);
+    }
+
+    return true;
+  }
+
+  // static fromJSON(json){
+
+  // }
+
   static getIcon(props) {
     return (
       <svg
@@ -232,6 +376,8 @@ export function QuestionIconFromType(type, props) {
       return TextQuestion.getIcon(props);
     case "branch":
       return BranchQuestion.getIcon(props);
+    case "slider":
+      return SliderQuestion.getIcon(props);
     default:
       return null;
   }
@@ -263,12 +409,22 @@ export function QuestionFromType(type, data) {
         key: data.key,
         id: data.id,
       });
+    case "slider":
+      return new SliderQuestion({
+        text: data.text,
+        aiEnhance: data.aiEnhance,
+        required: data.required,
+        minRange: data.minRange,
+        maxRange: data.maxRange,
+        key: data.key,
+        id: data.id,
+      });
     default:
       return null;
   }
 }
 
-export const allQuestionTypes = ["text", "option", "branch"];
+export const allQuestionTypes = ["text", "option", "branch", "slider"];
 
 export function getIconFromInstance(question) {
   switch (question.constructor) {
@@ -278,6 +434,8 @@ export function getIconFromInstance(question) {
       return TextQuestion.getIcon();
     case BranchQuestion:
       return BranchQuestion.getIcon();
+    case SliderQuestion:
+      return SliderQuestion.getIcon();
     default:
       return null;
   }

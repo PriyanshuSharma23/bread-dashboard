@@ -5,9 +5,9 @@ import {
   BranchQuestion,
   OptionQuestion,
   QuestionFromType,
+  SliderQuestion,
   QuestionIconFromType,
   TextQuestion,
-  getIconFromInstance,
 } from "../types/question";
 import { allQuestionTypes } from "../types/question";
 import { Option } from "./Option";
@@ -19,12 +19,13 @@ export const QuestionBlock = ({
   questionIdx,
   questions,
   addQuestion,
+  deleteQuestion,
 }) => {
   let questionType = question.type;
   const setQuestionType = (type) => {
     updateQuestion({
       idx: questionIdx,
-      question: QuestionFromType(type, question.getObj()),
+      question: QuestionFromType(type, question),
     });
   };
 
@@ -41,9 +42,38 @@ export const QuestionBlock = ({
   const isBranch = question.constructor === BranchQuestion;
   const isOption = question.constructor === OptionQuestion;
   const isText = question.constructor === TextQuestion;
+  const isSlider = question.constructor === SliderQuestion;
 
   return (
-    <div className="w-[80%] max-w-2xl  rounded-3xl border-black  bg-white  px-6 py-4 text-neutral-800 shadow-md lg:min-w-[36rem]">
+    <div className="group/main-card relative w-[80%]  max-w-2xl rounded-3xl  border-black  bg-white px-6 py-4 text-neutral-800 shadow-md lg:min-w-[36rem]">
+      <button
+        onClick={() => deleteQuestion({ idx: questionIdx })}
+        className={`pointer-events-none  absolute -right-1 -top-1 flex  h-4 w-4 items-center justify-center rounded-full bg-neutral-800 opacity-0  transition-opacity group-hover/main-card:pointer-events-auto group-hover/main-card:opacity-100`}
+      >
+        <svg
+          width="25"
+          height="25"
+          viewBox="0 0 25 25"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M16.3857 8.17773L8.38574 16.1777"
+            stroke="white"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M8.38574 8.17773L16.3857 16.1777"
+            stroke="white"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </button>
+
       <div className="flex h-[3.25rem] overflow-hidden rounded-full border border-neutral-800 focus-within:outline-1 focus-within:outline-offset-4 focus-within:outline-neutral-600/30">
         <input
           type="text"
@@ -54,8 +84,8 @@ export const QuestionBlock = ({
         />
         <div className="h-full w-1/4  bg-neutral-800">
           <Listbox value={questionType} onChange={setQuestionType}>
-            <Listbox.Button className="mx-auto flex h-full items-center justify-center gap-1 text-white">
-              <span>{getIconFromInstance(question)}</span>
+            <Listbox.Button className="mx-auto flex h-full items-center justify-center gap-1 text-white disabled:opacity-40">
+              <span>{question.constructor.getIcon()}</span>
               <span>
                 <svg
                   width="20"
@@ -82,7 +112,7 @@ export const QuestionBlock = ({
             >
               <Listbox.Options
                 className={
-                  "absolute mt-1 max-h-60 w-full max-w-max  overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+                  "absolute z-50  mt-1 max-h-60 w-full max-w-max  overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
                 }
               >
                 {allQuestionTypes.map((option) => (
@@ -138,6 +168,143 @@ export const QuestionBlock = ({
           />
         </div>
         <Wand selected={question.aiEnhance} setSelected={update("aiEnhance")} />
+        {!isBranch && (
+          <div className="relative ml-8">
+            <Listbox
+              disabled={question.key === "" || question.text === ""}
+              value={question.next}
+              onChange={(next) => {
+                if (next === "add-new-question") {
+                  const newQuestionId = addQuestion({
+                    question: new TextQuestion({}),
+                    idx: questionIdx,
+                  });
+
+                  next = newQuestionId;
+                }
+
+                update("next")(next);
+              }}
+            >
+              <div className="group relative">
+                <Listbox.Button className="relative flex min-w-max items-center  justify-center gap-1 rounded-full bg-neutral-800 px-4 py-2 text-sm text-white disabled:cursor-not-allowed disabled:opacity-30">
+                  {question.next === undefined ? "Branch To" : question.next}
+                  <span>
+                    <svg
+                      width="20"
+                      height="24"
+                      viewBox="0 0 20 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M5.83301 10L9.99967 15L14.1663 10"
+                        stroke="white"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </span>
+                </Listbox.Button>
+                {/* tooltip */}
+                {(question.key === "" || question.text === "") && (
+                  <div className="pointer-events-none absolute left-0 top-full z-50 mt-2  h-12 w-48 rounded-md bg-neutral-600 p-2 text-xs text-white opacity-0 shadow-md group-hover:opacity-100">
+                    Please fill in the question and key before branching
+                  </div>
+                )}
+              </div>
+              <Transition
+                as={Fragment}
+                leave="transition ease-in duration-100"
+                leaveFrom="opacity-100"
+                leaveTo="opacity-0"
+              >
+                <Listbox.Options
+                  className={
+                    "absolute right-0 z-50 mt-1 max-h-60  w-max  max-w-max overflow-auto  rounded-md bg-white py-2 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+                  }
+                >
+                  {questions
+                    .filter((q, idx) => idx > questionIdx)
+                    .map((question) => (
+                      <Listbox.Option key={question.id} value={question.id}>
+                        {({ selected, active }) => (
+                          <div
+                            className={`
+
+                        ${
+                          selected
+                            ? "bg-neutral-100 text-neutral-900"
+                            : "font-normal"
+                        }
+
+                        ${
+                          active
+                            ? "bg-neutral-100 text-neutral-900"
+                            : "text-gray-900"
+                        } relative flex max-w-xs cursor-pointer select-none items-center gap-1 overflow-hidden text-ellipsis px-7 py-2`}
+                          >
+                            <span
+                              className={`${
+                                selected ? "font-medium" : "font-normal"
+                              } ml-4 block truncate text-xs`}
+                            >
+                              <span className="text-sm">{question.id}</span>{" "}
+                              <br />
+                              {question.text}
+                            </span>
+                          </div>
+                        )}
+                      </Listbox.Option>
+                    ))}
+
+                  <Listbox.Option
+                    className={({ active }) =>
+                      `${
+                        active
+                          ? "bg-neutral-100 text-neutral-900"
+                          : "text-gray-900"
+                      } relative flex cursor-pointer select-none items-center gap-1 px-7 py-2`
+                    }
+                    value={"add-new-question"}
+                  >
+                    <svg
+                      width={20}
+                      height={20}
+                      viewBox="0 0 25 25"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M12.4502 7.44751V17.4475"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M7.4502 12.4475H17.4502"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M12.4502 21.4475C17.4208 21.4475 21.4502 17.4181 21.4502 12.4475C21.4502 7.47695 17.4208 3.44751 12.4502 3.44751C7.47964 3.44751 3.4502 7.47695 3.4502 12.4475C3.4502 17.4181 7.47964 21.4475 12.4502 21.4475Z"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                    Add New Question
+                  </Listbox.Option>
+                </Listbox.Options>
+              </Transition>
+            </Listbox>
+          </div>
+        )}
       </div>
 
       {isText && <div className="mt-10" />}
@@ -206,9 +373,36 @@ export const QuestionBlock = ({
         </div>
       )}
 
+      {isSlider && (
+        <div className="mt-8 flex flex-col gap-2 px-2">
+          <div className="flex items-center gap-2">
+            <span className="w-16 text-neutral-700">Min</span>
+            <input
+              type="number"
+              className="w-full max-w-[15rem] flex-shrink-0 overflow-hidden rounded-sm border border-dashed border-neutral-500  px-2 py-1"
+              placeholder="Min"
+              required
+              value={question.min}
+              onChange={(e) => update("minRange")(e.target.value)}
+            />
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="w-16 text-neutral-700">Max</span>
+            <input
+              type="number"
+              className="w-full max-w-[15rem] flex-shrink-0 overflow-hidden rounded-sm border border-dashed border-neutral-500  px-2 py-1"
+              placeholder="Max"
+              required
+              value={question.max}
+              onChange={(e) => update("maxRange")(e.target.value)}
+            />
+          </div>
+        </div>
+      )}
+
       <div className="mt-6 flex items-center justify-between px-3">
         <div className="flex gap-3">
-          {(isOption || isText) && (
+          {!isBranch && (
             <div className="flex items-center accent-neutral-700">
               <input
                 type="checkbox"

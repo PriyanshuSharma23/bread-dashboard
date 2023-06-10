@@ -25,7 +25,7 @@ export function BranchOption({
       <Option
         value={option.text}
         onChange={(e) =>
-          updateBranchOption({ ...option, text: e.target.value })
+          updateBranchOption({ ...option, option: e.target.value })
         }
         className="w-full flex-1"
         onDelete={deleteOption}
