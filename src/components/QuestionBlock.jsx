@@ -79,8 +79,8 @@ export const QuestionBlock = ({
           type="text"
           className="h-full w-full rounded-2xl px-4 outline-none"
           placeholder="Type your question here*"
-          value={question.text}
-          onChange={(e) => update("text")(e.target.value)}
+          value={question.text.english}
+          onChange={(e) => update("text")({ english: e.target.value })}
         />
         <div className="h-full w-1/4  bg-neutral-800">
           <Listbox value={questionType} onChange={setQuestionType}>
@@ -167,11 +167,14 @@ export const QuestionBlock = ({
             onChange={(e) => update("key")(e.target.value)}
           />
         </div>
-        <Wand selected={question.aiEnhance} setSelected={update("aiEnhance")} />
+        <Wand
+          selected={question.isModifiable}
+          setSelected={update("isModifiable")}
+        />
         {!isBranch && (
           <div className="relative ml-8">
             <Listbox
-              disabled={question.key === "" || question.text === ""}
+              disabled={question.key === "" || question.text.english === ""}
               value={question.next}
               onChange={(next) => {
                 if (next === "add-new-question") {
@@ -252,7 +255,7 @@ export const QuestionBlock = ({
                             >
                               <span className="text-sm">{question.id}</span>{" "}
                               <br />
-                              {question.text}
+                              {question.text.english}
                             </span>
                           </div>
                         )}
@@ -320,10 +323,11 @@ export const QuestionBlock = ({
                 update("options")(question.options.filter((_, i) => i !== idx));
               }}
               className={"max-w-[9rem] "}
+              value={option.english}
               onChange={(e) => {
                 update("options")(
                   question.options.map((o, i) =>
-                    i === idx ? e.target.value : o
+                    i === idx ? { english: e.target.value } : o
                   )
                 );
               }}
@@ -332,7 +336,7 @@ export const QuestionBlock = ({
           ))}
           <AddOption
             onClick={() => {
-              update("options")([...question.options, ""]);
+              update("options")([...question.options, { english: "" }]);
             }}
             className={`max-w-max border-neutral-600`}
           />
@@ -365,7 +369,7 @@ export const QuestionBlock = ({
             onClick={() => {
               update("options")([
                 ...question.options,
-                { next: null, option: "" },
+                { next: null, option: { english: "" } },
               ]);
             }}
             className={`w-full border-neutral-600`}
@@ -383,7 +387,7 @@ export const QuestionBlock = ({
               placeholder="Min"
               required
               value={question.min}
-              onChange={(e) => update("minRange")(e.target.value)}
+              onChange={(e) => update("minLength")(e.target.value)}
             />
           </div>
           <div className="flex items-center gap-2">
@@ -394,7 +398,7 @@ export const QuestionBlock = ({
               placeholder="Max"
               required
               value={question.max}
-              onChange={(e) => update("maxRange")(e.target.value)}
+              onChange={(e) => update("maxLength")(e.target.value)}
             />
           </div>
         </div>

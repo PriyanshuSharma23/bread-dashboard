@@ -23,9 +23,9 @@ export function BranchOption({
   return (
     <div className="flex w-full gap-2">
       <Option
-        value={option.text}
+        value={option.option.english}
         onChange={(e) =>
-          updateBranchOption({ ...option, option: e.target.value })
+          updateBranchOption({ ...option, option: { english: e.target.value } })
         }
         className="w-full flex-1"
         onDelete={deleteOption}
@@ -104,7 +104,7 @@ export function BranchOption({
                           } ml-4 block truncate text-xs`}
                         >
                           <span className="text-sm">{question.id}</span> <br />
-                          {question.text}
+                          {question.text.english}
                         </span>
                       </div>
                     )}

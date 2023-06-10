@@ -1,19 +1,19 @@
 export class SliderQuestion {
   constructor({
-    text = "",
-    aiEnhance = false,
+    text = { english: "" },
+    isModifiable = false,
     required = true,
-    minRange,
-    maxRange,
+    minLength,
+    maxLength,
     key = "",
     id,
     next,
   }) {
     this.text = text;
-    this.aiEnhance = aiEnhance;
+    this.isModifiable = isModifiable;
     this.required = required;
-    this.minRange = minRange;
-    this.maxRange = maxRange;
+    this.minLength = minLength;
+    this.maxLength = maxLength;
     this.key = key;
     this.id = id ?? Math.random().toString(36).substr(2, 9);
     this.type = "slider";
@@ -25,12 +25,12 @@ export class SliderQuestion {
       throw new Error("text is undefined in " + this.id);
     }
 
-    if (this.minRange === undefined || this.maxRange === undefined) {
-      throw new Error("minRange or maxRange is undefined in " + this.id);
+    if (this.minLength === undefined || this.maxLength === undefined) {
+      throw new Error("minLength or maxLength is undefined in " + this.id);
     }
 
-    if (this.minRange > this.maxRange) {
-      throw new Error("minRange is greater than maxRange " + this.id);
+    if (this.minLength > this.maxLength) {
+      throw new Error("minLength is greater than maxLength " + this.id);
     }
 
     if (this.key === undefined || this.key === "") {
@@ -43,10 +43,10 @@ export class SliderQuestion {
   getObj() {
     return {
       text: this.text,
-      aiEnhance: this.aiEnhance,
+      isModifiable: this.isModifiable,
       required: this.required,
-      minRange: this.minRange,
-      maxRange: this.maxRange,
+      minLength: this.minLength,
+      maxLength: this.maxLength,
       key: this.key,
       id: this.id,
     };
@@ -86,9 +86,9 @@ export class SliderQuestion {
 
 export class OptionQuestion {
   constructor({
-    text = "",
+    text = { english: "" },
     options = [],
-    aiEnhance = false,
+    isModifiable = false,
     required = true,
     multipleCorrect = false,
     key = "",
@@ -97,7 +97,7 @@ export class OptionQuestion {
   }) {
     this.text = text;
     this.options = options;
-    this.aiEnhance = aiEnhance;
+    this.isModifiable = isModifiable;
     this.required = required;
     this.multipleCorrect = multipleCorrect;
     this.key = key;
@@ -126,7 +126,7 @@ export class OptionQuestion {
     return {
       text: this.text,
       options: this.options,
-      aiEnhance: this.aiEnhance,
+      isModifiable: this.isModifiable,
       required: this.required,
       multipleCorrect: this.multipleCorrect,
       key: this.key,
@@ -193,15 +193,15 @@ export class OptionQuestion {
 
 export class TextQuestion {
   constructor({
-    text = "",
-    aiEnhance = false,
+    text = { english: "" },
+    isModifiable = false,
     required = true,
     key = "",
     id,
     next,
   }) {
     this.text = text;
-    this.aiEnhance = aiEnhance;
+    this.isModifiable = isModifiable;
     this.required = required;
     this.key = key;
     this.id = id ?? Math.random().toString(36).substr(2, 9);
@@ -212,7 +212,7 @@ export class TextQuestion {
   getObj() {
     return {
       text: this.text,
-      aiEnhance: this.aiEnhance,
+      isModifiable: this.isModifiable,
       required: this.required,
       key: this.key,
       id: this.id,
@@ -275,11 +275,17 @@ export class TextQuestion {
 }
 
 export class BranchQuestion {
-  constructor({ text = "", options = [], aiEnhance = false, key = "", id }) {
+  constructor({
+    text = { english: "" },
+    options = [],
+    isModifiable = false,
+    key = "",
+    id,
+  }) {
     this.text = text;
     this.key = key;
     this.options = options;
-    this.aiEnhance = aiEnhance;
+    this.isModifiable = isModifiable;
     this.required = true;
     this.multipleCorrect = false;
     this.id = id ?? Math.random().toString(36).substr(2, 9);
@@ -291,7 +297,7 @@ export class BranchQuestion {
       text: this.text,
       key: this.key,
       options: this.options,
-      aiEnhance: this.aiEnhance,
+      isModifiable: this.isModifiable,
       required: this.required,
       multipleCorrect: this.multipleCorrect,
       id: this.id,
@@ -388,7 +394,7 @@ export function QuestionFromType(type, data) {
     case "option":
       return new OptionQuestion({
         text: data.text,
-        aiEnhance: data.aiEnhance,
+        isModifiable: data.isModifiable,
         required: data.required,
         multipleCorrect: data.multipleCorrect,
         key: data.key,
@@ -397,7 +403,7 @@ export function QuestionFromType(type, data) {
     case "text":
       return new TextQuestion({
         text: data.text,
-        aiEnhance: data.aiEnhance,
+        isModifiable: data.isModifiable,
         required: data.required,
         key: data.key,
         id: data.id,
@@ -405,17 +411,17 @@ export function QuestionFromType(type, data) {
     case "branch":
       return new BranchQuestion({
         text: data.text,
-        aiEnhance: data.aiEnhance,
+        isModifiable: data.isModifiable,
         key: data.key,
         id: data.id,
       });
     case "slider":
       return new SliderQuestion({
         text: data.text,
-        aiEnhance: data.aiEnhance,
+        isModifiable: data.isModifiable,
         required: data.required,
-        minRange: data.minRange,
-        maxRange: data.maxRange,
+        minLength: data.minLength,
+        maxLength: data.maxLength,
         key: data.key,
         id: data.id,
       });
