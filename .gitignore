@@ -254,3 +254,4 @@ privatesettings.config
 cra-config
 /src/CRA.Worker/cra-two-instances-internal.yml
 .kube/
+build
