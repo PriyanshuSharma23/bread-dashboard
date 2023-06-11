@@ -1,0 +1,90 @@
+.analytics-container {
+    font-family: var(--font-fam) !important;
+    max-width: 1024px;
+    padding: 10px 0;
+    display: grid;
+    min-height: 100%;
+    width: 100%;
+    margin: 0 auto;
+    grid-template-columns:repeat(2, 1fr);
+    grid-template-rows: repeat(14, 1fr);
+    grid-template-areas:
+      "heading heading"
+      "map search"
+      "map counter"
+      "map counter"
+      "map bar"
+      "map bar"
+      "map bar"
+      "map bar"
+      "map bar"
+      "pie1 pie2"
+      "pie1 pie2"
+      "pie1 pie2"
+      "pie1 pie2"
+      "pie1 pie2";
+    grid-gap: 1rem;
+    background-color: #F6F6F6;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  } 
+  
+  #search{
+    grid-area:search;
+    border-radius: 10px;
+    align-self: flex-start;
+    z-index: 2;
+  }
+  #counter{
+    grid-area:counter;
+    border-radius: 10px;
+  }
+  #map{
+    /* background-color:green; */
+    grid-area:map;
+    border-radius: 10px;
+  }
+  
+  #bar-graph{
+    background-color:white;
+    grid-area:bar;
+    border-radius: 10px;    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  #piechart1{
+    background-color:white;
+    grid-area:pie1;
+    border-radius: 10px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+    flex-direction: column;
+  }
+
+  #piechart2{
+    background-color:white;
+    grid-area:pie2;
+    border-radius: 10px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+    flex-direction: column;
+  }
+  .pie-chart-heading{
+    text-align: left;
+    font-size: 24px;
+    font-weight: 600;
+    width: 90%;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--primary);
+  }
+  
+  .outer-box{
+    height: 98vh;
+  }

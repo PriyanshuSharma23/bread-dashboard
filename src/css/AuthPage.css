@@ -1,0 +1,145 @@
+/* AUTH PAGE */
+.auth-page-holder{
+    width: 100vw;
+    background-color: var(--primary);
+}
+.auth-page{
+    height: 100vh;
+    width: 40vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+}
+.auth-logo{
+    display: block;
+    margin-top: 6rem;
+    height: 20%;
+    max-height: 6rem;
+    width: auto;
+}
+.login-form{
+    height: 55%;
+    width: 100%;
+    margin-bottom: 8rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+/* FORM STYLES*/
+.google-login{
+    border: none;
+    background-color: var(--primary);
+    color: var(--secondary);
+    font-size: var(--font-small);
+    font-family: var(--font-fam);
+    padding: 1.2rem;
+    width: 70%;
+    font-weight: 600;
+    border-radius: 10rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    transition: 0.3s ease-in-out;
+}
+.google-login > img{
+    display: block;
+    height: 100%;
+    width: auto;
+}
+.separator{
+    font-size: var(--font-medium);
+    color: rgba(0,0,0,0.5);
+    font-family: var(--font-fam);
+    font-weight: 600;
+    position: relative;
+}
+.separator::before{
+    content: "";
+    height: 2px;
+    position: absolute;
+    right: 150%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 10rem;
+    background-color: var(--primary);
+}
+.separator::after{
+    content: "";
+    height: 2px;
+    position: absolute;
+    left: 150%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 10rem;
+    background-color: var(--primary);
+}
+.input-holder{
+    background-color: rgba(0,0,0,0.1) ;
+    padding: 1rem;
+    width: 70%;
+    border: none;
+    border-radius: 10rem;
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    padding-left: 4rem;
+}
+.input-holder > img{
+    display: block;
+    height: 130%;
+    width: auto;
+}
+#email, #password, #confirm-password{
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    font-size: var(--font-small);
+    font-family: var(--font-fam);
+}
+#email::placeholder,#password::placeholder,#confirm-password::placeholder{
+    font-family: var(--font-fam);
+    font-weight: 500;
+}
+#email:focus,#password:focus,#confirm-password:focus{
+    outline: none;
+}
+/* LOGIN BUTTONS */
+.button-holder{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 5%;
+}
+.register, .login{
+    font-size: var(--font-small);
+    font-family: var(--font-fam);
+    background-color: transparent;
+    margin-top: 3rem;
+    border: none;
+    padding: 1.2rem;
+    width: 30%;
+    border-radius: 10rem;
+    color: var(--primary);
+    border: 1px solid var(--primary);
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s ease-in-out;
+}
+.register.active{
+    background-color: var(--primary);
+    color: var(--secondary);
+}
+.login.active{
+    background-color: var(--primary);
+    color: var(--secondary);
+}
+.register:hover, .login:hover, .google-login:hover{
+    box-shadow: 0 0 10px var(--primary);
+}

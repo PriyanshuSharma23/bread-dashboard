@@ -7,6 +7,7 @@ import { useAddFormMutation } from "../hooks/mutations/addFormMutation";
 import { ShareWindow } from "../components/Share";
 import { Loader } from "../components/Loader";
 import { getAuth } from "firebase/auth";
+import Navbar from "../components/Navbar";
 
 export const FormDashboard = () => {
   const formsQuery = useFormsQuery();
@@ -27,8 +28,8 @@ export const FormDashboard = () => {
   }
   return (
     <div className="">
-      <div className="fixed inset-x-0 top-0 -z-10 h-64 bg-gradient-to-t from-gray-700 via-gray-900 to-black pt-10 "></div>
-      <div className="fixed inset-x-0 bottom-0 top-60 min-h-screen rounded-t-lg  bg-slate-50 pt-4  shadow-2xl lg:pt-8">
+      <Navbar />
+      <div className="fixed inset-x-0 bottom-0 top-0 min-h-screen rounded-t-lg  bg-slate-50 pt-4  shadow-2xl lg:pt-8">
         <div className="container mx-auto px-4">
           <h1 className="text-3xl font-semibold text-neutral-600">
             Forms Dashboard

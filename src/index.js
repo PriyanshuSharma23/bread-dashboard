@@ -9,6 +9,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SignIn } from "./routes/SignIn";
 import { SignUp } from "./routes/SignUp";
 import { Protected } from "./routes/Protected";
+import Dashboard from "./routes/Dashboard";
 
 const router = createBrowserRouter([
   { path: "/sign-in", element: <SignIn /> },
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
       { path: "/form-builder/:formId", element: <App /> },
       { path: "/forms", element: <FormDashboard /> },
     ],
+  },
+  {
+    path: "/dashboard",
+    element: <Dashboard />,
   },
 ]);
 

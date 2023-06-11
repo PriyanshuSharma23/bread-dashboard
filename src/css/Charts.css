@@ -1,0 +1,24 @@
+.chart-overbox{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    /* border: 5px #661515 solid; */
+    /* margin-top: 40px; */
+    /* border-radius: 30px; */
+}
+
+.chart-box{
+    /* border: 2px black solid; */
+    /* width: 35%; */
+    /* height: 30vh; */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.bar{
+    /* height: 35vh; */
+    /* width: 45%; */
+}
