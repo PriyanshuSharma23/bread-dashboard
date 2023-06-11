@@ -72,25 +72,15 @@ export const useSyncQuestionsMutation = ({ formId }) => {
           equal = false;
         }
 
-        if (equal) {
-          for (let i = 0; i < formQuestions.length; i++) {
-            if (!formQuestions[i].isEqual(formQuestionsQuery.data[i])) {
-              equal = false;
-              break;
-            }
-          }
-        }
-
-        if (equal) {
-          console.log("equal");
-          return;
-        }
-
         let promises = [];
         console.log("Form Questions before mutation", formQuestions);
         //   translation step
         for (let i = 0; i < formQuestions.length; i++) {
-          console.log("Running outer loop");
+          if (formQuestions[i].isEqual(formQuestionsQuery.data[i])) {
+            continue;
+          }
+
+          equal = false;
 
           formQuestions[i].text.malayalam = await translate(
             formQuestions[i].text.english
@@ -115,6 +105,11 @@ export const useSyncQuestionsMutation = ({ formId }) => {
               }
             }
           }
+        }
+
+        if (equal) {
+          console.log("equal");
+          return;
         }
 
         console.log("formQuestions", formQuestions);
