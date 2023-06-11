@@ -723,7 +723,6 @@ function Dashboard() {
 
   const handleSelection = (index) => {
     setSelectedIndex(index);
-    console.log(index);
   };
 
   const handleDistrict = (district_name) => {
@@ -735,9 +734,9 @@ function Dashboard() {
   useEffect(() => {
     (async () => {
       const dat = await axios.get("http://localhost:3000/analytics/dashboard");
-      console.log(dat);
       setData(dat.data.data);
     })();
+    return () => {};
   }, []);
   return (
     <div className="outer-box">
@@ -763,7 +762,7 @@ function Dashboard() {
         </div>
         <div id="map">
           <MapComponent
-            data={raw_data}
+            data={data}
             district={district}
             handleDistrict={handleDistrict}
             selectedDistrict={selectedDistrict}
