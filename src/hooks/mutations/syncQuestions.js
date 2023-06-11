@@ -4,21 +4,46 @@ import { updateDoc, doc, runTransaction } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useFormQuestions } from "../useFormQuestions";
 
+// const translate = async (text) => {
+//   let response = await fetch("https://code-to-give.onrender.com/translate", {
+//     method: "POST",
+//     body: JSON.stringify({
+//       text,
+//       language: "malayalam",
+//     }),
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//   });
+
+//   let data = await response.json();
+//   console.log("Response from api", data);
+//   return data.translatedText;
+// };
+
 const translate = async (text) => {
-  let response = await fetch("http://localhost:3000/translate", {
+  const formData = new URLSearchParams();
+  let apiKey =
+    "trnsl.1.1.20230610T101022Z.df0eadfa9b801c0f.644b09efaca21b50d5ca109d4934eced8ae74262";
+  let lang = "en-ml";
+  formData.append("key", apiKey);
+  formData.append("lang", lang);
+  formData.append("text", text);
+
+  const url = "https://translate.yandex.net/api/v1.5/tr.json/translate";
+
+  let res = await fetch(url, {
     method: "POST",
-    body: JSON.stringify({
-      text,
-      language: "malayalam",
-    }),
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "application/x-www-form-urlencoded",
+      Accept: "*/*",
     },
+    body: formData,
   });
 
-  let data = await response.json();
-  console.log("Response from api", data);
-  return data.translatedText;
+  let data = await res.json();
+
+  return data.text;
 };
 
 /**

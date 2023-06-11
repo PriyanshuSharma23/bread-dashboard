@@ -733,7 +733,9 @@ function Dashboard() {
 
   useEffect(() => {
     (async () => {
-      const dat = await axios.get("http://localhost:3000/analytics/dashboard");
+      const dat = await axios.get(
+        "https://code-to-give.onrender.com/analytics/dashboard"
+      );
       setData(dat.data.data);
     })();
     return () => {};

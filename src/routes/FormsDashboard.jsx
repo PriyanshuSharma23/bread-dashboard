@@ -29,8 +29,8 @@ export const FormDashboard = () => {
   return (
     <div className="">
       <Navbar />
-      <div className="fixed inset-x-0 bottom-0 top-0 min-h-screen rounded-t-lg  bg-slate-50 pt-4  shadow-2xl lg:pt-8">
-        <div className="container mx-auto px-4">
+      <div className="min-h-screen rounded-t-lg  bg-slate-50 pt-4  shadow-2xl lg:pt-8">
+        <div className="mx-auto ml-20 px-4">
           <h1 className="text-3xl font-semibold text-neutral-600">
             Forms Dashboard
           </h1>
@@ -133,7 +133,7 @@ const FormCard = ({ form }) => {
   return (
     <>
       <ShareWindow
-        url={"https://zivi.vercel.app/?formId=" + form.id}
+        url={`https://code-to-give-2023-team9-frontend-sidtohan.vercel.app/form?formID=${form.id}&volunteerFormID=${form.id}`}
         open={showShare}
         setOpen={setShowShare}
         form={form}
@@ -164,11 +164,7 @@ const FormCard = ({ form }) => {
         </div>
 
         <div className="absolute inset-x-0 bottom-0 flex items-center justify-between p-2">
-          <div className="">
-            {!draft && (
-              <span className="text-sm text-neutral-500">2 responses</span>
-            )}
-          </div>
+          <div className=""></div>
           <div className="flex">
             <button
               className="grid h-10 w-10 place-content-center rounded-full  p-1  hover:bg-neutral-200 active:bg-neutral-300 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-transparent"

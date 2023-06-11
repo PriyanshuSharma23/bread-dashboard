@@ -184,7 +184,9 @@ export default function Counselling() {
   const [data, setData] = useState(defaultData);
   useEffect(() => {
     (async () => {
-      const dat = await axios.get("http://localhost:3000/counselling");
+      const dat = await axios.get(
+        "https://code-to-give.onrender.com/counselling"
+      );
       setData(dat.data.data);
     })();
   }, []);

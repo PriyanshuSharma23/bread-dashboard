@@ -56,15 +56,16 @@ export const useFormQuestions = ({ formId }) => {
 
       while (stack.length > 0 && runs < 100) {
         let nextId = stack.pop();
+        console.log("nextId", nextId);
         if (!nextId) {
           break;
         }
 
         if (!visited.has(nextId)) {
-          let doc = docs.find((doc) => doc.id === nextId);
+          let doc = docs.find((doc) => doc?.id === nextId);
 
           if (!doc) {
-            throw new Error("doc not found", nextId);
+            continue;
           }
 
           ordered.push(doc);

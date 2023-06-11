@@ -7,6 +7,8 @@ export const ShareWindow = ({ url, open, setOpen, form }) => {
     setOpen(false);
   };
 
+  console.log("URL", url);
+
   return (
     <Transition appear show={open} as={Fragment}>
       <Dialog as="div" className="relative z-30" onClose={closeModal}>
@@ -63,7 +65,7 @@ export const ShareWindow = ({ url, open, setOpen, form }) => {
 
                       <p className="mt-3 text-sm">Form created </p>
                       <p className=" text-2xl font-bold ">
-                        {form.createdAt.toDate().toDateString()}
+                        {new Date(form.createdAt.seconds * 1000).toDateString()}
                       </p>
                     </div>
                   </div>

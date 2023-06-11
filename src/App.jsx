@@ -102,7 +102,7 @@ function App() {
   return (
     <div>
       <ShareWindow
-        url={`www.google.com`}
+        url={`https://code-to-give-2023-team9-frontend-sidtohan.vercel.app/form?formID=${formId}&volunteerFormID=${formId}`}
         open={shareOpen}
         setOpen={setShareOpen}
         form={formQuery.data}
