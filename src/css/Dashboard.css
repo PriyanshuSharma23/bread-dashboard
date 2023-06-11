@@ -1,9 +1,8 @@
 .analytics-container {
     font-family: var(--font-fam) !important;
-    max-width: 1024px;
-    padding: 10px 0;
     display: grid;
     min-height: 100%;
+    max-width: 1024px;
     width: 100%;
     margin: 0 auto;
     grid-template-columns:repeat(2, 1fr);
@@ -27,6 +26,7 @@
     background-color: #F6F6F6;
     padding-left: 1rem;
     padding-right: 1rem;
+    padding-top: 2rem;
   } 
   
   #search{

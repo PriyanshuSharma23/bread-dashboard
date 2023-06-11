@@ -1,0 +1,27 @@
+/* Counselling */
+.counselling{
+    height: 100%;
+    margin-left: 10vw;
+    max-width: 1024px;
+    width: 100%;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+.data-holder{
+    margin-top: 4rem;
+    font-size: 20px;
+    width: 100%;
+    background-color: white;
+}
+.collapsible{
+    padding: 10px;
+    border-bottom: 1px solid rgb(178, 178, 178);
+}
+.content-holder{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 18px;
+    padding: 4px 2rem;
+    color: rgba(0,0,0,0.6)
+}

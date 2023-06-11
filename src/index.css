@@ -13,3 +13,10 @@ body {
     background-clip: text;
     text-fill-color: transparent;
 }
+
+.login-splash{
+    position: fixed;
+    right: 20%;
+    width: 40vw;
+    height: auto;
+}

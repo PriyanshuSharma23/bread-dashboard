@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useRef } from "react";
 import { useState } from "react";
 import { Pane } from "../components/Pane";
+import LoginSplash from "../assets/login-splash.svg";
 import {
   getAuth,
   signInWithEmailAndPassword,
@@ -52,6 +53,7 @@ export const SignIn = () => {
 
   return (
     <Pane className="grid place-items-center bg-white shadow-xl">
+      <img src={LoginSplash} alt="login-splash" className="login-splash" />
       <img src="/logo.png" alt="" className="absolute left-4 top-4 w-44" />
       <div className="w-full px-6 lg:px-10">
         <button

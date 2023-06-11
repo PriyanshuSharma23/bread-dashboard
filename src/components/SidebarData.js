@@ -15,4 +15,10 @@ export const SidebarData = [
     icon: <DiIcons.DiGoogleAnalytics />,
     cName: "nav-text",
   },
+  {
+    title: "Counselling",
+    path: "/counselling",
+    icon: <AiIcons.AiOutlineUser />,
+    cName: "nav-text",
+  },
 ];

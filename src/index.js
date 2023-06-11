@@ -10,6 +10,7 @@ import { SignIn } from "./routes/SignIn";
 import { SignUp } from "./routes/SignUp";
 import { Protected } from "./routes/Protected";
 import Dashboard from "./routes/Dashboard";
+import Counselling from "./routes/Counselling";
 
 const router = createBrowserRouter([
   { path: "/sign-in", element: <SignIn /> },
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
   {
     path: "/dashboard",
     element: <Dashboard />,
+  },
+  {
+    path: "/counselling",
+    element: <Counselling />,
   },
 ]);
 
