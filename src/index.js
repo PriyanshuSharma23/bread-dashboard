@@ -6,10 +6,21 @@ import reportWebVitals from "./reportWebVitals";
 import { FormDashboard } from "./routes/FormsDashboard";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { SignIn } from "./routes/SignIn";
+import { SignUp } from "./routes/SignUp";
+import { Protected } from "./routes/Protected";
 
 const router = createBrowserRouter([
-  { path: "/form-builder/:formId", element: <App /> },
-  { path: "/forms", element: <FormDashboard /> },
+  { path: "/sign-in", element: <SignIn /> },
+  { path: "/sign-up", element: <SignUp /> },
+  {
+    path: "/",
+    element: <Protected />,
+    children: [
+      { path: "/form-builder/:formId", element: <App /> },
+      { path: "/forms", element: <FormDashboard /> },
+    ],
+  },
 ]);
 
 const queryClient = new QueryClient();

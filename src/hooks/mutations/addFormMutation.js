@@ -9,7 +9,7 @@ export const useAddFormMutation = () => {
 
   return useMutation({
     mutationKey: ["add form"],
-    mutationFn: async ({ forms }) => {
+    mutationFn: async ({ forms, user }) => {
       if (!forms) {
         throw new Error("No forms");
       }
@@ -26,7 +26,7 @@ export const useAddFormMutation = () => {
 
       let newForm = {
         formName: newName,
-        createdBy: "user",
+        createdBy: user,
         isDraft: true,
         start: null,
         createdAt: new Date(),

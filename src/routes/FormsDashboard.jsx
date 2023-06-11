@@ -6,10 +6,13 @@ import { relativeTime } from "../utils/relTime";
 import { useAddFormMutation } from "../hooks/mutations/addFormMutation";
 import { ShareWindow } from "../components/Share";
 import { Loader } from "../components/Loader";
+import { getAuth } from "firebase/auth";
 
 export const FormDashboard = () => {
   const formsQuery = useFormsQuery();
   const addFormMutation = useAddFormMutation();
+
+  const auth = getAuth();
 
   let forms = formsQuery.data;
 
@@ -31,11 +34,12 @@ export const FormDashboard = () => {
             Forms Dashboard
           </h1>
 
-          <div className="mt-8 flex items-center gap-4">
+          <div className="mt-8 flex flex-wrap items-center gap-4">
             <button
               onClick={() => {
                 addFormMutation.mutate({
                   forms: formsQuery.data,
+                  user: auth.currentUser.displayName,
                 });
               }}
               className="grid h-40  w-56 place-content-center rounded-md border border-dashed  border-neutral-800 text-neutral-600"
