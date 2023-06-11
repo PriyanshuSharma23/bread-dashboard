@@ -9,10 +9,10 @@ export const useFormsQuery = () => {
     async (_params) => {
       // let forms = await db.collection("forms").get();
       const forms = await getDocs(
-        query(collection(db, "forms"), orderBy("updatedAt", "desc"), limit(5))
+        query(collection(db, "forms"), orderBy("updatedAt", "desc"))
       );
 
-      console.log("forms", forms);
+      console.log("Forms", forms);
 
       let formsData = forms.docs.map((form) => {
         return new FormType({
@@ -20,6 +20,8 @@ export const useFormsQuery = () => {
           ...form.data(),
         });
       });
+
+      console.log("formsData", formsData);
 
       return formsData;
     },
