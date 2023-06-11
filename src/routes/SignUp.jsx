@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import LoginSplash from "../assets/login-splash.svg";
 import { Pane } from "../components/Pane";
 import { useNavigate } from "react-router-dom";
 import { useRef } from "react";
@@ -63,6 +64,7 @@ export const SignUp = () => {
   };
   return (
     <Pane className="grid place-items-center bg-white shadow-xl">
+      <img src={LoginSplash} alt="login-splash" className="login-splash" />
       <img src="/logo.png" alt="" className="absolute left-4 top-4 w-44" />
       <div className="w-full px-6 lg:px-10">
         <button
