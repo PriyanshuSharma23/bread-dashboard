@@ -1,7 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useRef } from "react";
-import { useState } from "react";
 import { Pane } from "../components/Pane";
+import LoginSplash from "../assets/login-splash.svg";
+import * as AiIcon from "react-icons/ai";
 import {
   getAuth,
   signInWithEmailAndPassword,
@@ -52,12 +53,26 @@ export const SignIn = () => {
 
   return (
     <Pane className="grid place-items-center bg-white shadow-xl">
+      <img src={LoginSplash} alt="login-splash" className="login-splash" />
       <img src="/logo.png" alt="" className="absolute left-4 top-4 w-44" />
       <div className="w-full px-6 lg:px-10">
         <button
           onClick={googleLogin}
-          className="w-full rounded-full bg-red-800 px-5 py-2 text-white"
+          className="login-google w-full rounded-full bg-red-800 px-5 py-2 text-white"
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            gap: "2rem",
+          }}
         >
+          <AiIcon.AiOutlineGoogle
+            style={{
+              display: "block",
+              height: "2rem",
+            }}
+            size={"1.5rem"}
+          />
           Sign in With Google
         </button>
         <div className="my-4 flex items-center">

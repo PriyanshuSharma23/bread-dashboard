@@ -12,6 +12,7 @@ import { useFormMutation } from "./hooks/mutations/updateForm";
 import { useSyncQuestionsMutation } from "./hooks/mutations/syncQuestions";
 import { ShareWindow } from "./components/Share";
 import { Loader } from "./components/Loader";
+import { Switch } from "@headlessui/react";
 
 function App() {
   let { formId } = useParams();
@@ -29,6 +30,8 @@ function App() {
   let updatedOnce = useRef(false);
 
   const [shareOpen, setShareOpen] = useState(false);
+
+  console.log("Fuck me sideways", formQuestions);
 
   useEffect(() => {
     if (formQuery.isSuccess && formQuery.data && !formQuery.isFetching) {
@@ -99,30 +102,61 @@ function App() {
   return (
     <div>
       <ShareWindow
-        url={`www.google.com`}
+        url={`https://code-to-give-2023-team9-frontend-sidtohan.vercel.app/form?formID=${formId}&volunteerFormID=${formId}`}
         open={shareOpen}
         setOpen={setShareOpen}
         form={formQuery.data}
       />
-      <button
-        className="fixed right-1 top-1 grid h-16 w-16 place-content-center rounded-full  p-1  hover:bg-neutral-200 active:bg-neutral-300 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-transparent"
-        disabled={formQuery.data.isDraft}
-        onClick={() => setShareOpen((prev) => !prev)}
-      >
-        <svg
-          width={40}
-          height={40}
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
+
+      <div className="fixed right-1 top-1 flex items-center gap-2">
+        For Volunteer
+        <Switch
+          checked={formQuery?.data.isVolunteer}
+          onChange={() => {
+            formMutation.mutate({
+              form: formQuery.data,
+              updates: {
+                isVolunteer: !formQuery?.data.isVolunteer,
+              },
+            });
+          }}
+          disabled={formMutation.isLoading}
+          className={`${
+            formQuery.data.isVolunteer ? "bg-neutral-900" : "bg-neutral-700"
+          }
+          relative inline-flex h-5 w-10 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75
+            disabled:opacity-50
+          `}
         >
-          <path
-            d="M15.3156 16.6578L8.6938 13.3469M8.68439 10.6578L15.3125 7.34377M21 18C21 19.6569 19.6569 21 18 21C16.3431 21 15 19.6569 15 18C15 16.3431 16.3431 15 18 15C19.6569 15 21 16.3431 21 18ZM21 6C21 7.65685 19.6569 9 18 9C16.3431 9 15 7.65685 15 6C15 4.34315 16.3431 3 18 3C19.6569 3 21 4.34315 21 6ZM9 12C9 13.6569 7.65685 15 6 15C4.34315 15 3 13.6569 3 12C3 10.3431 4.34315 9 6 9C7.65685 9 9 10.3431 9 12Z"
-            stroke="currentColor"
-            strokeWidth="1.5"
+          <span className="sr-only">Volunteer</span>
+          <span
+            aria-hidden="true"
+            className={`${
+              formQuery.data.isVolunteer ? "translate-x-5" : "translate-x-0"
+            }
+            pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}
           />
-        </svg>
-      </button>
+        </Switch>
+        <button
+          className=" grid h-16 w-16 place-content-center rounded-full  p-1  hover:bg-neutral-200 active:bg-neutral-300 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-transparent"
+          disabled={formQuery.data.isDraft}
+          onClick={() => setShareOpen((prev) => !prev)}
+        >
+          <svg
+            width={40}
+            height={40}
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M15.3156 16.6578L8.6938 13.3469M8.68439 10.6578L15.3125 7.34377M21 18C21 19.6569 19.6569 21 18 21C16.3431 21 15 19.6569 15 18C15 16.3431 16.3431 15 18 15C19.6569 15 21 16.3431 21 18ZM21 6C21 7.65685 19.6569 9 18 9C16.3431 9 15 7.65685 15 6C15 4.34315 16.3431 3 18 3C19.6569 3 21 4.34315 21 6ZM9 12C9 13.6569 7.65685 15 6 15C4.34315 15 3 13.6569 3 12C3 10.3431 4.34315 9 6 9C7.65685 9 9 10.3431 9 12Z"
+              stroke="currentColor"
+              strokeWidth="1.5"
+            />
+          </svg>
+        </button>
+      </div>
       <div className="fixed left-0 top-0 z-20 flex items-center rounded-br-lg bg-white px-4 py-2 shadow-md">
         <div className="flex items-center gap-2 text-ellipsis text-2xl">
           <Link to={"/forms"}>
@@ -219,6 +253,7 @@ function App() {
             questions={formQuestions}
             addQuestion={addQuestion}
             deleteQuestion={deleteQuestion}
+            setFormQuestions={setFormQuestions}
           />
         ))}
         {formQuestions[formQuestions.length - 1]?.constructor !==
@@ -310,10 +345,11 @@ function App() {
     return question.id;
   }
 
-  function updateQuestion({ idx, question }) {
+  function updateQuestion({ idx, questionFn }) {
     setFormQuestions((prevQuestions) => {
-      const newQuestions = [...prevQuestions];
-      newQuestions[idx] = question;
+      const newQuestions = prevQuestions.map((q, i) => {
+        return i === idx ? questionFn(q) : q;
+      });
       return newQuestions;
     });
   }

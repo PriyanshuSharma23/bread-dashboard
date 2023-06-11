@@ -1,0 +1,27 @@
+.dropdown-div{
+    /* border: 2px black solid; */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 2vh;
+    margin-left: 10vw;
+}
+
+.dropdown-css{
+    width: 30vw;
+    height: 8vh;
+    /* font-family: 'Courier New', Courier, monospace; */
+    font-size: 1.5rem;
+    /* color: #661515; */
+    /* border: 4px #661515 solid; */
+    font-weight: 600;
+    border-radius: 20px;
+}
+.img-div{
+    display: flex;
+    flex-direction: row-reverse;
+    /* border: 2px violet solid; */
+}
+.logo-img{
+    height: 10vh;
+}

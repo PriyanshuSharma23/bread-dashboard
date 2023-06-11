@@ -49,6 +49,7 @@ export class SliderQuestion {
       maxLength: this.maxLength,
       key: this.key,
       id: this.id,
+      next: this.next,
     };
   }
 
@@ -159,6 +160,7 @@ export class OptionQuestion {
       multipleCorrect: this.multipleCorrect,
       key: this.key,
       id: this.id,
+      next: this.next,
     };
   }
 
@@ -272,6 +274,7 @@ export class TextQuestion {
       required: this.required,
       key: this.key,
       id: this.id,
+      next: this.next,
     };
   }
 

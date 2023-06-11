@@ -4,6 +4,48 @@ import { updateDoc, doc, runTransaction } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useFormQuestions } from "../useFormQuestions";
 
+// const translate = async (text) => {
+//   let response = await fetch("https://code-to-give.onrender.com/translate", {
+//     method: "POST",
+//     body: JSON.stringify({
+//       text,
+//       language: "malayalam",
+//     }),
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//   });
+
+//   let data = await response.json();
+//   console.log("Response from api", data);
+//   return data.translatedText;
+// };
+
+const translate = async (text) => {
+  const formData = new URLSearchParams();
+  let apiKey =
+    "trnsl.1.1.20230610T101022Z.df0eadfa9b801c0f.644b09efaca21b50d5ca109d4934eced8ae74262";
+  let lang = "en-ml";
+  formData.append("key", apiKey);
+  formData.append("lang", lang);
+  formData.append("text", text);
+
+  const url = "https://translate.yandex.net/api/v1.5/tr.json/translate";
+
+  let res = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      Accept: "*/*",
+    },
+    body: formData,
+  });
+
+  let data = await res.json();
+
+  return data.text;
+};
+
 /**
  * @typedef {Object} UpdateFormMutation
  * @property {import('../../types/formType').FormType} form
@@ -45,13 +87,37 @@ export const useSyncQuestionsMutation = ({ formId }) => {
         }
 
         let promises = [];
-
+        console.log("Form Questions before mutation", formQuestions);
         //   translation step
-        for (let question of formQuestions) {
+        for (let i = 0; i < formQuestions.length; i++) {
+          console.log("Running outer loop");
+
+          formQuestions[i].text.malayalam = await translate(
+            formQuestions[i].text.english
+          );
+
+          if (
+            "options" in formQuestions[i] &&
+            formQuestions[i].options.length > 0
+          ) {
+            console.log("Running inner loop");
+            for (let j = 0; j < formQuestions[i].options.length; j++) {
+              if ("option" in formQuestions[i].options[j]) {
+                formQuestions[i].options[j].option.malayalam = await translate(
+                  formQuestions[i].options[j].option.english
+                );
+              } else {
+                // option question
+
+                formQuestions[i].options[j].malayalam = await translate(
+                  formQuestions[i].options[j].english
+                );
+              }
+            }
+          }
         }
 
-        // assuming we have translated the formQuestions to the format that the API expects
-        if (!formQuery.data) return;
+        console.log("formQuestions", formQuestions);
 
         await runTransaction(db, async (transaction) => {
           const form = formQuery.data;

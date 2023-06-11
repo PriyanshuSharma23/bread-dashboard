@@ -1,0 +1,72 @@
+/* Counselling */
+.counselling {
+    height: 100%;
+    margin-left: 10vw;
+    max-width: 1024px;
+    width: 100%;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+.data-holder {
+    margin-top: 4rem;
+    font-size: 20px;
+    width: 100%;
+    background-color: white;
+}
+
+.collapsible {
+    padding: 25px;
+    border-bottom: 1px solid rgb(178, 178, 178);
+}
+
+.content-holder {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 18px;
+    padding: 4px 2rem;
+    color: rgba(0, 0, 0, 0.6)
+}
+
+.info-holder {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    width: 100%;
+}
+
+.personal {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 2px;
+}
+
+.email {
+    color: #661515 !important;
+}
+
+.icon-holder {
+    background-color: rgba(0, 0, 0, 0.2);
+    position: relative;
+    height: 3.5rem;
+    width: 3.5rem;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon-holder>svg {
+    height: 75%;
+    width: auto;
+}
+
+.expand-icon {
+    height: 2rem;
+    width: 2rem;
+    color: rgba(0, 0, 0, 0.6);
+    transition: 0.3s ease-in-out;
+}

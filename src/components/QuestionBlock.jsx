@@ -20,22 +20,26 @@ export const QuestionBlock = ({
   questions,
   addQuestion,
   deleteQuestion,
+  setFormQuestions,
 }) => {
   let questionType = question.type;
   const setQuestionType = (type) => {
     updateQuestion({
       idx: questionIdx,
-      question: QuestionFromType(type, question),
+      questionFn: (prev) => QuestionFromType(type, prev),
     });
   };
 
   const update = (key) => (value) => {
     updateQuestion({
       idx: questionIdx,
-      question: new question.constructor({
-        ...question.getObj(),
-        [key]: value,
-      }),
+      questionFn: (prev) => {
+        console.log("Fuck me sideways", prev.constructor);
+        return new prev.constructor({
+          ...prev.getObj(),
+          [key]: typeof value !== "function" ? value : value(prev[key]),
+        });
+      },
     });
   };
 
@@ -325,8 +329,8 @@ export const QuestionBlock = ({
               className={"max-w-[9rem] "}
               value={option.english}
               onChange={(e) => {
-                update("options")(
-                  question.options.map((o, i) =>
+                update("options")((prev) =>
+                  prev.map((o, i) =>
                     i === idx ? { english: e.target.value } : o
                   )
                 );
@@ -336,7 +340,7 @@ export const QuestionBlock = ({
           ))}
           <AddOption
             onClick={() => {
-              update("options")([...question.options, { english: "" }]);
+              update("options")((prev) => [...prev, { english: "" }]);
             }}
             className={`max-w-max border-neutral-600`}
           />
