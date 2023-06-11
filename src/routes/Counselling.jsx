@@ -123,7 +123,7 @@ const defaultData = [
 function Collapsible({ element }) {
   const { getCollapseProps, getToggleProps, isExpanded } = useCollapse();
   const propArray = [];
-  if (element === null) return <></>;
+  if (element === null || !element.name) return <></>;
   for (let prop in element) {
     if (prop === "name") continue;
     if (prop === "form") {

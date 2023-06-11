@@ -123,7 +123,7 @@ const defaultData = [
 function Collapsible({ element }) {
   const { getCollapseProps, getToggleProps, isExpanded } = useCollapse();
   const propArray = [];
-  if (element === null) return <></>;
+  if (element === null || !element.name) return <></>;
   for (let prop in element) {
     if (prop === "name") continue;
     if (prop === "form") {
@@ -161,8 +161,8 @@ export default function Volunteer() {
   const [data, setData] = useState(defaultData);
   useEffect(() => {
     (async () => {
-      const dat = await axios.get("http://localhost:3000/counselling");
-      setData(dat.data.data);
+      const dat = await axios.get("http://localhost:3000/volunteer");
+      setData(dat.data.docs);
     })();
   }, []);
   return (
