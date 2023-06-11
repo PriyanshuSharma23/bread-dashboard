@@ -3,6 +3,8 @@ import { useCollapse } from "react-collapsed";
 import "../css/Counselling.css";
 import axios from "axios";
 import Navbar from "../components/Navbar";
+import * as AiOutlineIcon from "react-icons/ai";
+import * as MdIcon from "react-icons/md";
 
 const defaultData = [
   {
@@ -141,7 +143,28 @@ function Collapsible({ element }) {
     <div className="collapsible">
       <Navbar />
       <div className="header" {...getToggleProps()}>
-        {element.name}
+        <div className="info-holder">
+          <div className="icon-holder">
+            <AiOutlineIcon.AiOutlineUser color="rgba(0,0,0,0.6)" />
+          </div>
+          <div className="personal">
+            <span className="name">{element.name}</span>
+            <span className="email">
+              {element.email ? element.email : "abc@gmail.com"}
+            </span>
+          </div>
+
+          <MdIcon.MdOutlineExpandMore
+            className="expand-icon"
+            style={
+              isExpanded
+                ? {
+                    transform: "rotate(-180deg)",
+                  }
+                : {}
+            }
+          />
+        </div>
       </div>
       <div {...getCollapseProps()}>
         <div className="content-holder">
@@ -157,7 +180,7 @@ function Collapsible({ element }) {
     </div>
   );
 }
-export default function Volunteer() {
+export default function Counselling() {
   const [data, setData] = useState(defaultData);
   useEffect(() => {
     (async () => {

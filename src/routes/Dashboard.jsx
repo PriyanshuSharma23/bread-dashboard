@@ -50,7 +50,7 @@ const raw_data = [
       {
         bar: 0,
         color: "#FFBB28",
-        category: "21-24",
+        category: "21-23",
       },
       {
         bar: 0,
@@ -99,7 +99,7 @@ const raw_data = [
       {
         bar: 0,
         color: "#FFBB28",
-        category: "21-24",
+        category: "21-23",
       },
       {
         bar: 0,
@@ -148,7 +148,7 @@ const raw_data = [
       {
         bar: 0,
         color: "#FFBB28",
-        category: "21-24",
+        category: "21-23",
       },
       {
         bar: 0,
@@ -197,7 +197,7 @@ const raw_data = [
       {
         bar: 0,
         color: "#FFBB28",
-        category: "21-24",
+        category: "21-23",
       },
       {
         bar: 0,
@@ -246,7 +246,7 @@ const raw_data = [
       {
         bar: 1,
         color: "#FFBB28",
-        category: "21-24",
+        category: "21-23",
       },
       {
         bar: 0,
@@ -295,7 +295,7 @@ const raw_data = [
       {
         bar: 0,
         color: "#FFBB28",
-        category: "21-24",
+        category: "21-23",
       },
       {
         bar: 0,
@@ -344,7 +344,7 @@ const raw_data = [
       {
         bar: 0,
         color: "#FFBB28",
-        category: "21-24",
+        category: "21-23",
       },
       {
         bar: 0,
@@ -393,7 +393,7 @@ const raw_data = [
       {
         bar: 0,
         color: "#FFBB28",
-        category: "21-24",
+        category: "21-23",
       },
       {
         bar: 0,
@@ -442,7 +442,7 @@ const raw_data = [
       {
         bar: 0,
         color: "#FFBB28",
-        category: "21-24",
+        category: "21-23",
       },
       {
         bar: 0,
@@ -491,7 +491,7 @@ const raw_data = [
       {
         bar: 0,
         color: "#FFBB28",
-        category: "21-24",
+        category: "21-23",
       },
       {
         bar: 0,
@@ -540,7 +540,7 @@ const raw_data = [
       {
         bar: 0,
         color: "#FFBB28",
-        category: "21-24",
+        category: "21-23",
       },
       {
         bar: 0,
@@ -589,7 +589,7 @@ const raw_data = [
       {
         bar: 0,
         color: "#FFBB28",
-        category: "21-24",
+        category: "21-23",
       },
       {
         bar: 0,
@@ -638,7 +638,7 @@ const raw_data = [
       {
         bar: 0,
         color: "#FFBB28",
-        category: "21-24",
+        category: "21-23",
       },
       {
         bar: 0,
@@ -687,7 +687,7 @@ const raw_data = [
       {
         bar: 0,
         color: "#FFBB28",
-        category: "21-24",
+        category: "21-23",
       },
       {
         bar: 0,
