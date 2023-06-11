@@ -8,13 +8,14 @@ function MapComponent({ data, district, handleDistrict, selectedDistrict }) {
   // const [selectedDistrict, setSelectedDistrict] = useState('Alappuzha');
 
   function getColor(addictionLevel) {
-    if (addictionLevel < 800) {
+    console.log(addictionLevel);
+    if (addictionLevel < 5) {
       return "green";
-    } else if (addictionLevel < 900) {
+    } else if (addictionLevel < 600) {
       return "yellow";
-    } else if (addictionLevel < 1000) {
+    } else if (addictionLevel < 800) {
       return "orange";
-    } else if (addictionLevel < 1100) {
+    } else if (addictionLevel < 1000) {
       return "brown";
     } else {
       return "red";
@@ -24,7 +25,7 @@ function MapComponent({ data, district, handleDistrict, selectedDistrict }) {
   function style(feature) {
     const district_name = feature.properties.NAME_2;
     const obj = data[district.indexOf(district_name)];
-    console.log(data);
+    console.log(obj);
     const addictionLevel =
       obj.substanceUsed[0].bar +
       obj.substanceUsed[1].bar +
