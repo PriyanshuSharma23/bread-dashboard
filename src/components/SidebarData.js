@@ -1,6 +1,7 @@
 import React from "react";
 import * as AiIcons from "react-icons/ai";
 import * as DiIcons from "react-icons/di";
+import * as MdIcons from "react-icons/md";
 
 export const SidebarData = [
   {
@@ -19,6 +20,12 @@ export const SidebarData = [
     title: "Counselling",
     path: "/counselling",
     icon: <AiIcons.AiOutlineUser />,
+    cName: "nav-text",
+  },
+  {
+    title: "Volunteer",
+    path: "/volunteer",
+    icon: <MdIcons.MdVolunteerActivism />,
     cName: "nav-text",
   },
 ];

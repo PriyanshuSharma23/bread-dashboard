@@ -157,7 +157,7 @@ function Collapsible({ element }) {
     </div>
   );
 }
-export default function Counselling() {
+export default function Volunteer() {
   const [data, setData] = useState(defaultData);
   useEffect(() => {
     (async () => {
@@ -173,7 +173,7 @@ export default function Counselling() {
           gridArea: "heading",
         }}
       >
-        Counselling
+        Volunteers
       </h1>
       <div className="data-holder">
         {data.map((element, i) => {
