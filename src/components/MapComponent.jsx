@@ -68,8 +68,11 @@ function MapComponent({ data, district, handleDistrict, selectedDistrict }) {
         center={[10.8505, 76.2711]}
         zoom={8}
         style={{ height: "100%", width: "100%", transform: "rotate(-90deg)" }}
+        maxZoom={17}
+        attributionControl={false}
       >
         <TileLayer url="https://api.maptiler.com/maps/basic-v2/256/{z}/{x}/{y}.png?key=0N1JdnQUtV4h7tKLX5fT" />
+
         {geoJsonLayers}
       </MapContainer>
     </div>

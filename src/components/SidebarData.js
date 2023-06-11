@@ -1,31 +1,31 @@
 import React from "react";
-import * as AiIcons from "react-icons/ai";
-import * as DiIcons from "react-icons/di";
-import * as MdIcons from "react-icons/md";
+import { AiOutlineForm, AiOutlineUser } from "react-icons/ai";
+import { DiGoogleAnalytics } from "react-icons/di";
+import { MdVolunteerActivism } from "react-icons/md";
 
 export const SidebarData = [
   {
     title: "Form Builder",
     path: "/forms",
-    icon: <AiIcons.AiOutlineForm />,
+    icon: <AiOutlineForm className="stroke-current" />,
     cName: "nav-text",
   },
   {
     title: "Dashboard",
     path: "/dashboard",
-    icon: <DiIcons.DiGoogleAnalytics />,
+    icon: <DiGoogleAnalytics className="stroke-current" />,
     cName: "nav-text",
   },
   {
     title: "Counselling",
     path: "/counselling",
-    icon: <AiIcons.AiOutlineUser />,
+    icon: <AiOutlineUser className="stroke-current" />,
     cName: "nav-text",
   },
   {
     title: "Volunteer",
     path: "/volunteer",
-    icon: <MdIcons.MdVolunteerActivism />,
+    icon: <MdVolunteerActivism className="stroke-current" />,
     cName: "nav-text",
   },
 ];

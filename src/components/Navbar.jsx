@@ -5,6 +5,8 @@ import { SidebarData } from "./SidebarData";
 import { IconContext } from "react-icons";
 
 function Navbar() {
+  let path = window.location.pathname;
+
   return (
     <>
       <IconContext.Provider value={{ color: "undefined" }}>
@@ -12,8 +14,15 @@ function Navbar() {
           <ul className="nav-menu-items">
             {SidebarData.map((item, index) => {
               return (
-                <li key={index} className={item.cName}>
-                  <Link to={item.path}>{item.icon}</Link>
+                <li key={index} className={`${item.cName}`}>
+                  <Link
+                    to={item.path}
+                    className={` ${
+                      item.path === path ? " border border-white" : ""
+                    }`}
+                  >
+                    {item.icon}
+                  </Link>
                 </li>
               );
             })}

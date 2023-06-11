@@ -3,8 +3,9 @@ import { useCollapse } from "react-collapsed";
 import "../css/Counselling.css";
 import axios from "axios";
 import Navbar from "../components/Navbar";
-import * as AiOutlineIcon from "react-icons/ai";
-import * as MdIcon from "react-icons/md";
+import { AiOutlineUser } from "react-icons/ai";
+import { MdOutlineExpandMore } from "react-icons/md";
+import { BsWhatsapp } from "react-icons/bs";
 
 const defaultData = [
   {
@@ -145,16 +146,27 @@ function Collapsible({ element }) {
       <div className="header" {...getToggleProps()}>
         <div className="info-holder">
           <div className="icon-holder">
-            <AiOutlineIcon.AiOutlineUser color="rgba(0,0,0,0.6)" />
+            <AiOutlineUser color="rgba(0,0,0,0.6)" />
           </div>
           <div className="personal">
             <span className="name">{element.name}</span>
             <span className="email">
-              {element.email ? element.email : "abc@gmail.com"}
+              Contact {element.contact ? element.contact : ""}
             </span>
           </div>
 
-          <MdIcon.MdOutlineExpandMore
+          <a
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+            href={"https://wa.me/" + element.contact}
+            target="_blank"
+            className="ml-auto grid h-12 w-12 place-content-center rounded-full text-2xl hover:bg-red-800/20 active:bg-red-800/10"
+            rel="noreferrer"
+          >
+            <BsWhatsapp />
+          </a>
+          <MdOutlineExpandMore
             className="expand-icon"
             style={
               isExpanded
@@ -198,12 +210,14 @@ export default function Counselling() {
           gridArea: "heading",
         }}
       >
-        Counselling
+        Counselling Enquiries
       </h1>
       <div className="data-holder">
-        {data.map((element, i) => {
-          return <Collapsible key={`counselling${i}`} element={element} />;
-        })}
+        {data
+          .filter((d) => d.contact != null)
+          .map((element, i) => {
+            return <Collapsible key={`counselling${i}`} element={element} />;
+          })}
       </div>
     </section>
   );
