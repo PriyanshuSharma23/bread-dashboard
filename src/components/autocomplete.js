@@ -12,9 +12,8 @@ export default function Autocomplete({
   const handleSelect = (name) => {
     let i = 0;
     for (; i < 14; i++) {
-      if (district[i] == name) {
+      if (district[i] === name) {
         handleSelection(i);
-        console.log(i);
         break;
       }
     }

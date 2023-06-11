@@ -18,8 +18,6 @@ export function BranchOption({
   addQuestion,
   deleteOption,
 }) {
-  console.log("optionIdx", optionIdx);
-
   return (
     <div className="flex w-full gap-2">
       <Option

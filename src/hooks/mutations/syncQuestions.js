@@ -22,6 +22,8 @@ import { useFormQuestions } from "../useFormQuestions";
 // };
 
 const translate = async (text) => {
+  if (text.length === 0) return text;
+
   const formData = new URLSearchParams();
   let apiKey =
     "trnsl.1.1.20230610T101022Z.df0eadfa9b801c0f.644b09efaca21b50d5ca109d4934eced8ae74262";
@@ -76,6 +78,11 @@ export const useSyncQuestionsMutation = ({ formId }) => {
         console.log("Form Questions before mutation", formQuestions);
         //   translation step
         for (let i = 0; i < formQuestions.length; i++) {
+          console.log(
+            "Comparing",
+            formQuestions[i],
+            formQuestionsQuery.data[i]
+          );
           if (formQuestions[i].isEqual(formQuestionsQuery.data[i])) {
             continue;
           }

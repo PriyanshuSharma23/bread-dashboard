@@ -99,6 +99,8 @@ export class SliderQuestion {
   }
 
   isEqual(other) {
+    if (!other) return false;
+
     return (
       this.text.english === other.text.english &&
       this.isModifiable === other.isModifiable &&
@@ -235,6 +237,8 @@ export class OptionQuestion {
   }
 
   isEqual(other) {
+    if (!other) return false;
+
     return (
       this.text.english === other.text.english &&
       this.options === other.options &&
@@ -345,6 +349,8 @@ export class TextQuestion {
   }
 
   isEqual(other) {
+    if (!other) return false;
+
     return (
       this.text.english === other.text.english &&
       this.isModifiable === other.isModifiable &&
@@ -465,6 +471,8 @@ export class BranchQuestion {
   }
 
   isEqual(other) {
+    if (!other) return false;
+
     return (
       this.text.english === other.text.english &&
       this.options === other.options &&

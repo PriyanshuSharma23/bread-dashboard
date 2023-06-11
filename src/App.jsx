@@ -31,8 +31,6 @@ function App() {
 
   const [shareOpen, setShareOpen] = useState(false);
 
-  console.log("Fuck me sideways", formQuestions);
-
   useEffect(() => {
     if (formQuery.isSuccess && formQuery.data && !formQuery.isFetching) {
       setSurveyTitle(formQuery.data.formName);
@@ -41,7 +39,6 @@ function App() {
   }, [formQuery.isSuccess, formQuery.data, formQuery.isFetching]);
 
   useEffect(() => {
-    console.log("questionsQuery.isSuccess", questionsQuery.data);
     setLastSyncTime(new Date());
     if (questionsQuery.isSuccess && updatedOnce.current === false) {
       setFormQuestions(questionsQuery.data);
@@ -53,8 +50,6 @@ function App() {
     // debouching the sync with db
     if (debounceTimerRef.current) {
       clearTimeout(debounceTimerRef.current);
-
-      console.log("Debouncing sync");
 
       debounceTimerRef.current = setTimeout(() => {
         // execute the sync
@@ -399,26 +394,6 @@ function App() {
       }
     );
   }
-}
-
-function convertQuestionsToJSON(questions) {
-  let questionsJSON = [];
-
-  for (const question of questions) {
-    if ("checkValid" in question) {
-      console.log(question.checkValid);
-    }
-
-    try {
-      question.checkValid();
-      questionsJSON.push(question.getObj());
-    } catch (e) {
-      alert(e.message);
-      return;
-    }
-  }
-
-  return questionsJSON;
 }
 
 export default App;

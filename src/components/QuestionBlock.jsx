@@ -34,7 +34,6 @@ export const QuestionBlock = ({
     updateQuestion({
       idx: questionIdx,
       questionFn: (prev) => {
-        console.log("Fuck me sideways", prev.constructor);
         return new prev.constructor({
           ...prev.getObj(),
           [key]: typeof value !== "function" ? value : value(prev[key]),
